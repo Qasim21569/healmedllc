@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
+import { useState, type CSSProperties, type ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { EASE } from "@/lib/motion";
@@ -22,14 +22,15 @@ export function SwapMaskText({
   className?: string;
   style?: CSSProperties;
 }) {
-  const previous = useRef(state);
-  const forward = state >= previous.current;
+  // Direction of travel, updated during render when `state` changes.
+  const [previous, setPrevious] = useState(state);
+  const [forward, setForward] = useState(true);
+  if (state !== previous) {
+    setForward(state > previous);
+    setPrevious(state);
+  }
   const reduced = useReducedMotion();
   const duration = reduced ? 0 : 0.35;
-
-  useEffect(() => {
-    previous.current = state;
-  }, [state]);
 
   const containerVariants = {
     animate: {

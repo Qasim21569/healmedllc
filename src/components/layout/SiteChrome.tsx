@@ -3,6 +3,7 @@ import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvide
 import { TransitionProvider } from "@/components/providers/TransitionProvider";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
+import { Intro } from "./Intro";
 
 /**
  * Providers + header + main + footer. Used by the (site) layout and by the
@@ -17,6 +18,7 @@ export function SiteChrome({ children, footer = true }: { children: ReactNode; f
           {children}
         </main>
         {footer && <Footer />}
+        <Intro />
       </TransitionProvider>
     </SmoothScrollProvider>
   );

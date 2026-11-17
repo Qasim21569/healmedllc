@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useMotionValueEvent, useScroll, useTransform } from "motion/react";
 import { home } from "@/content/home";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
@@ -157,33 +157,32 @@ function useStageLayout(
 ) {
   const [layout, setLayout] = useState<Layout | null>(null);
 
-  const measure = useCallback(() => {
-    const s = stage.current;
-    const b = box.current;
-    if (!s || !b) return;
-    // offset* ignore transforms, so the text layer's fade-up doesn't skew this.
-    let left = 0;
-    let top = 0;
-    let el: HTMLElement | null = b;
-    while (el && el !== s) {
-      left += el.offsetLeft;
-      top += el.offsetTop;
-      el = el.offsetParent as HTMLElement | null;
-    }
-    setLayout({
-      w: s.clientWidth,
-      h: s.clientHeight,
-      box: { left, top, width: b.offsetWidth, height: b.offsetHeight },
-    });
-  }, [stage, box]);
-
   useLayoutEffect(() => {
-    measure();
+    const measure = () => {
+      const s = stage.current;
+      const b = box.current;
+      if (!s || !b) return;
+      // offset* ignore transforms, so the text layer's fade-up doesn't skew this.
+      let left = 0;
+      let top = 0;
+      let el: HTMLElement | null = b;
+      while (el && el !== s) {
+        left += el.offsetLeft;
+        top += el.offsetTop;
+        el = el.offsetParent as HTMLElement | null;
+      }
+      setLayout({
+        w: s.clientWidth,
+        h: s.clientHeight,
+        box: { left, top, width: b.offsetWidth, height: b.offsetHeight },
+      });
+    };
+    // ResizeObserver reports once on observe, so this also takes the first measurement.
     const ro = new ResizeObserver(measure);
     if (stage.current) ro.observe(stage.current);
     if (box.current) ro.observe(box.current);
     return () => ro.disconnect();
-  }, [measure, stage, box]);
+  }, [stage, box]);
 
   return layout;
 }

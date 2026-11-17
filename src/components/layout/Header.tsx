@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { site } from "@/content/site";
 import { useHeaderTheme } from "@/hooks/useHeaderTheme";
@@ -20,7 +20,6 @@ import { MobileMenu } from "./MobileMenu";
 export function HeaderLogo({ theme, className }: { theme: string; className?: string }) {
   const dark = theme !== "light";
   const common = {
-    alt: "",
     width: site.logo.width,
     height: site.logo.height,
     loading: "eager" as const,
@@ -29,6 +28,7 @@ export function HeaderLogo({ theme, className }: { theme: string; className?: st
   return (
     <span className={cn("relative block h-9 lg:h-10", className)}>
       <Image
+        alt=""
         {...common}
         src={site.logo.onLight}
         className={cn(
@@ -37,6 +37,7 @@ export function HeaderLogo({ theme, className }: { theme: string; className?: st
         )}
       />
       <Image
+        alt=""
         {...common}
         src={site.logo.onDark}
         className={cn(
@@ -77,10 +78,12 @@ export function Header() {
     else if (latest < previous || latest <= 240) setHidden(false);
   });
 
-  // Close the menu whenever the route changes.
-  useEffect(() => {
+  // Close the menu whenever the route changes (state adjusted during render).
+  const [lastPath, setLastPath] = useState(pathname);
+  if (pathname !== lastPath) {
+    setLastPath(pathname);
     setMenuOpen(false);
-  }, [pathname]);
+  }
 
   const closeMenu = () => {
     setMenuOpen(false);

@@ -39,11 +39,12 @@ export function MobileMenu({
   useEffect(() => {
     if (!open) return;
     const root = document.documentElement;
-    lenis?.current?.stop();
+    const instance = lenis?.current;
+    instance?.stop();
     root.style.overflow = "hidden";
     closeRef.current?.focus();
     return () => {
-      lenis?.current?.start();
+      instance?.start();
       root.style.overflow = "";
     };
   }, [open, lenis]);

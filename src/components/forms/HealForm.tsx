@@ -40,7 +40,7 @@ export function HealForm({
 }) {
   const config = formConfigs[kind];
   const formId = useId();
-  const turnstile = useTurnstile();
+  const { ref: turnstileRef, token, reset: resetTurnstile } = useTurnstile();
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [uploading, setUploading] = useState(false);
 
@@ -57,7 +57,7 @@ export function HealForm({
 
   const onSubmit = async (values: FieldValues) => {
     setStatus("idle");
-    const result = await config.action(values, turnstile.token ?? undefined);
+    const result = await config.action(values, token ?? undefined);
     if (result.ok) {
       setStatus("success");
       return;
@@ -67,7 +67,7 @@ export function HealForm({
         setError(field, { message });
       return;
     }
-    turnstile.reset();
+    resetTurnstile();
     setStatus("error");
   };
 
@@ -152,7 +152,7 @@ export function HealForm({
                   {formStates.error}
                 </p>
               )}
-              <div ref={turnstile.ref} />
+              <div ref={turnstileRef} />
               <Button
                 type="submit"
                 disabled={isSubmitting || uploading}
