@@ -13,22 +13,38 @@ import { Button } from "@/components/ui/Button";
 import { SmartLink } from "@/components/ui/SmartLink";
 import { MobileMenu } from "./MobileMenu";
 
-/** Header logo. The PNG is violet; on dark and brand themes it is filtered to white. */
+/**
+ * Header logo: the supplied artwork as two transparent marks (violet for light
+ * sections, white for brand and dark), stacked and crossfaded with the theme.
+ */
 export function HeaderLogo({ theme, className }: { theme: string; className?: string }) {
+  const dark = theme !== "light";
+  const common = {
+    alt: "",
+    width: site.logo.width,
+    height: site.logo.height,
+    loading: "eager" as const,
+    sizes: "120px",
+  };
   return (
-    <Image
-      src={site.logo.src}
-      alt=""
-      width={site.logo.width}
-      height={site.logo.height}
-      loading="eager"
-      sizes="120px"
-      className={cn(
-        "h-8 w-auto transition-[filter] duration-300 ease-heal lg:h-9",
-        theme !== "light" && "brightness-0 invert",
-        className,
-      )}
-    />
+    <span className={cn("relative block h-9 lg:h-10", className)}>
+      <Image
+        {...common}
+        src={site.logo.onLight}
+        className={cn(
+          "h-full w-auto transition-opacity duration-300 ease-heal",
+          dark && "opacity-0",
+        )}
+      />
+      <Image
+        {...common}
+        src={site.logo.onDark}
+        className={cn(
+          "absolute inset-0 h-full w-auto transition-opacity duration-300 ease-heal",
+          !dark && "opacity-0",
+        )}
+      />
+    </span>
   );
 }
 

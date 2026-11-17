@@ -11,7 +11,7 @@
 | --- | --- | --- | --- |
 | P0 Setup | ✅ done | `5701fed` | Next 16.4.6, React 19.3, Tailwind 4.3, motion 12.43, vitest 5 |
 | P1 Chrome | ✅ done | see `git log --grep "feat(p1)"` | Header T6, MobileMenu, Footer T8, transition T9, 404, PageHero |
-| P2 Home A (I1, statement, I7) | ⬜ | | |
+| P2 Home A (I1, statement, I7) | ✅ done | see `git log --grep "feat(p2)"` | HEAL letters script, I1 hero (static + desktop zoom), T3 statement, I7 rows; real logo marks |
 | P3 Home B (I8, I5, T4, I2, marquee, shop) | ⬜ | | |
 | P4 Planning + Service | ⬜ | | |
 | P5 Disposition + forms | ⬜ | | |

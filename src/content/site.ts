@@ -21,10 +21,12 @@ export const site = {
   brandLine: "Providing a second life to your asset.",
   url: "https://healmedllc.com",
 
+  /** Transparent marks built from the supplied PNG by scripts/build-logo.mjs. */
   logo: {
-    src: "/brand/heal-logo-violet.png",
-    width: 360,
-    height: 142,
+    onLight: "/brand/heal-logo-violet-mark.png",
+    onDark: "/brand/heal-logo-white.png",
+    width: 286,
+    height: 109,
     alt: "HEAL home",
   },
 

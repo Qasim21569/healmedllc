@@ -9,7 +9,9 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "format": "prettier --write src tests"
+    "format": "prettier --write src tests",
+    "build:letters": "node scripts/build-heal-letters.mjs",
+    "build:logo": "node scripts/build-logo.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
