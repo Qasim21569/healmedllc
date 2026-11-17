@@ -128,19 +128,63 @@ export const disposition = {
   faq: {
     eyebrow: "FAQ",
     h2: { desktop: ["Questions sellers ask."] } satisfies Lines,
-    /** Items whose answer is `null` ([confirm]) render nothing. */
+    /**
+     * Answers written for the site (Qasim, 2026-11-18) without unconfirmed
+     * specifics: no wipe standard, no service radius, no lot minimums.
+     * Ahmed to confirm. Items whose answer is `null` render nothing.
+     */
     items: [
-      { question: "Do you buy equipment that doesn't work?", answer: null }, // [confirm]
-      { question: "Do you buy single items or only full lots?", answer: null }, // [confirm]
+      {
+        question: "Do you buy equipment that doesn't work?",
+        answer: {
+          desktop: [
+            "Often, yes. Equipment that no longer works",
+            "can still have value in its parts. Tell us",
+            "the make, model and what's wrong, and we'll",
+            "let you know what we can offer.",
+          ],
+        },
+      },
+      {
+        question: "Do you buy single items or only full lots?",
+        answer: {
+          desktop: [
+            "Send us what you have, whether it's one",
+            "device or a full floor. We review every",
+            "list and reply with what we can offer.",
+          ],
+        },
+      },
       {
         question: "How do you handle patient data?",
-        // [confirm method] before naming a wipe standard.
-        answer: { desktop: ["Data-bearing devices are wiped before", "they leave our hands."] },
+        answer: {
+          desktop: [
+            "Data-bearing devices are wiped before",
+            "they leave our hands. Ask us about the",
+            "process if you need it for your records.",
+          ],
+        },
       },
       {
         question: "Where do you operate?",
-        // [confirm service area]
-        answer: { desktop: ["We are based in Sacramento, California."] },
+        answer: {
+          desktop: [
+            "We're based in Sacramento, California.",
+            "Tell us where your equipment is and",
+            "we'll let you know how we can help.",
+          ],
+        },
+      },
+      {
+        question: "What do I need to send to get an offer?",
+        answer: {
+          desktop: [
+            "A list with make, model and quantity, plus",
+            "a few photos if you have them. A",
+            "spreadsheet is fine. We reply by email",
+            "with next steps.",
+          ],
+        },
       },
     ] satisfies readonly FaqItem[],
   },

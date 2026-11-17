@@ -14,7 +14,7 @@
 | P2 Home A (I1, statement, I7) | ✅ done | see `git log --grep "feat(p2)"` | HEAL letters script, I1 hero (static + desktop zoom), T3 statement, I7 rows; real logo marks |
 | P3 Home B (I8, I5, T4, I2, marquee, shop) | ✅ done | see `git log --grep "feat(p3)"` | BreakoutTile, DriftColumns, PulseSteps, I2 shutter, marquee, shop tiles; mobile per §7 |
 | P4 Planning + Service | ✅ done | see `git log --grep "feat(p4)"` | I6 sticky swap + stacked fallback, How it works, What we service (I5 + scan), How we help. Service request form landed in P5 with the forms infra |
-| P5 Disposition + forms | ⬜ | | |
+| P5 Disposition + forms | ✅ done | see `git log --grep "feat(p5)"` | Disposition page, 4 zod schemas, Server Actions, Turnstile, Resend + dev fallback, Blob client uploads, HealForm, Service request + Offer wired, FAQ answers written |
 | P6 About, Shop, Contact | ⬜ | | |
 | P7 SEO + legal | ⬜ | | |
 | P8 Polish | ⬜ | | |

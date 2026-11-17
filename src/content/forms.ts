@@ -17,6 +17,9 @@ export const formStates = {
   fileTooBig: "That file is over 20 MB. Try a smaller file or email it to info@healmedllc.com.",
   fileType: "Use an xlsx, csv, jpg, png or pdf file.",
   uploading: "Uploading…",
+  uploadFailed:
+    "That file didn't upload. You can still send the form and email the file to info@healmedllc.com.",
+  successTitle: "Request sent",
   removeFile: "Remove",
 } as const;
 
