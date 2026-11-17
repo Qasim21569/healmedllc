@@ -12,3 +12,8 @@ export function isExternalHref(href: string): boolean {
 export function isProtocolHref(href: string): boolean {
   return /^(mailto|tel):/.test(href);
 }
+
+/** Filter helper: drops `null` placeholders ([confirm] content renders nothing). */
+export function present<T>(value: T | null | undefined): value is T {
+  return value !== null && value !== undefined;
+}

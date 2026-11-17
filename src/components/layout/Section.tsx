@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, Ref } from "react";
 import { cn } from "@/lib/utils";
 
 export type Theme = "light" | "dark" | "brand";
@@ -23,8 +23,10 @@ export function Section({
   className,
   labelledBy,
   label,
+  ref,
   children,
 }: {
+  ref?: Ref<HTMLElement>;
   theme: Theme;
   id?: string;
   tint?: boolean;
@@ -38,6 +40,7 @@ export function Section({
 }) {
   return (
     <Tag
+      ref={ref as never}
       id={id}
       data-theme={theme}
       aria-labelledby={labelledBy}

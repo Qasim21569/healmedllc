@@ -4,6 +4,7 @@ import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from
 import { motion, useMotionValue, useMotionValueEvent, useScroll, useTransform } from "motion/react";
 import { home } from "@/content/home";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
+import { Section } from "@/components/layout/Section";
 import { Button } from "@/components/ui/Button";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { MaskText } from "@/components/ui/MaskText";
@@ -119,10 +120,10 @@ function LettersMask({ maskId }: { maskId: string }) {
 function HeroStatic() {
   const maskId = useId().replace(/:/g, "");
   return (
-    <section
-      data-theme="brand"
-      aria-labelledby="home-title"
-      className="relative bg-canvas px-margin-edge pt-[calc(var(--header-h)+var(--s-section-gap)*0.4)] pb-section-gap text-ink"
+    <Section
+      theme="brand"
+      labelledBy="home-title"
+      className="pt-[calc(var(--header-h)+var(--s-section-gap)*0.4)]"
     >
       <HeroEyebrows />
       <div
@@ -138,7 +139,7 @@ function HeroStatic() {
       <div className="mt-[calc(var(--s-section-gap)*0.4)]">
         <HeroText />
       </div>
-    </section>
+    </Section>
   );
 }
 
@@ -246,12 +247,7 @@ function HeroDesktop() {
   });
 
   return (
-    <section
-      ref={sectionRef}
-      data-theme="brand"
-      aria-labelledby="home-title"
-      className="relative h-[240vh] bg-canvas text-ink"
-    >
+    <Section ref={sectionRef} theme="brand" flush labelledBy="home-title" className="h-[240vh]">
       <div ref={stageRef} className="sticky top-0 h-svh overflow-hidden">
         {/* Layer 0: photo */}
         <motion.div className="absolute inset-0" style={{ scale: photoScale }}>
@@ -300,7 +296,7 @@ function HeroDesktop() {
           {hero.caption}
         </motion.p>
       </div>
-    </section>
+    </Section>
   );
 }
 
