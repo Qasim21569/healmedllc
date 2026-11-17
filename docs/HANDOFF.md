@@ -1,105 +1,146 @@
 # HANDOFF: current state
 
 > Wins if any doc disagrees. Update at the end of every phase: what changed, what's next, what's blocked, what needs Qasim's eyes.
-> **Last updated:** 2026-11-18 (by Claude, end of P1, checkpoint 1)
+> **Last updated:** 2026-11-18 (by Claude, end of P9)
 
 ## State
 
-**P1 done, waiting at checkpoint 1 for Qasim's visual pass.** Header, mobile menu, footer, page transition, 404 and PageHero are on every route. Home is still a stub (h1 only) until P2. Next: P2 Home A.
+**All phases built (P0 to P9).** Every page, section, signature, form and SEO piece in the plan is in. Qasim asked to run P2 to P9 straight through after checkpoint 1, so checkpoints 2 (after P3) and 3 (after P6) were not held: everything from P2 on still needs its first visual pass. What remains is visual tuning, real photos and Ahmed's `[confirm]` answers, then the launch checklist below.
 
 | Phase | Status | Commit | Notes |
 | --- | --- | --- | --- |
-| P0 Setup | ✅ done | `5701fed` | Next 16.4.6, React 19.3, Tailwind 4.3, motion 12.43, vitest 5 |
-| P1 Chrome | ✅ done | see `git log --grep "feat(p1)"` | Header T6, MobileMenu, Footer T8, transition T9, 404, PageHero |
-| P2 Home A (I1, statement, I7) | ✅ done | see `git log --grep "feat(p2)"` | HEAL letters script, I1 hero (static + desktop zoom), T3 statement, I7 rows; real logo marks |
-| P3 Home B (I8, I5, T4, I2, marquee, shop) | ✅ done | see `git log --grep "feat(p3)"` | BreakoutTile, DriftColumns, PulseSteps, I2 shutter, marquee, shop tiles; mobile per §7 |
-| P4 Planning + Service | ✅ done | see `git log --grep "feat(p4)"` | I6 sticky swap + stacked fallback, How it works, What we service (I5 + scan), How we help. Service request form landed in P5 with the forms infra |
-| P5 Disposition + forms | ✅ done | see `git log --grep "feat(p5)"` | Disposition page, 4 zod schemas, Server Actions, Turnstile, Resend + dev fallback, Blob client uploads, HealForm, Service request + Offer wired, FAQ answers written |
-| P6 About, Shop, Contact | ✅ done | see `git log --grep "feat(p6)"` | About (I4 collage, The name T8, null-safe team), Shop (I5 categories, store cards hidden until URLs exist, inline stock check), Contact (intent chips, details card, map tile); all 4 forms wired |
-| P7 SEO + legal | ✅ done | see `git log --grep "feat(p7)"` | Metadata + OG/Twitter per route, opengraph-image, icons, LocalBusiness + FAQPage JSON-LD, sitemap, robots, legal holding pages, redirects scaffold |
-| P8 Polish | ⬜ | | |
-| P9 Launch prep | ⬜ | | |
+| P0 Setup | ✅ | `5701fed` | Next 16.4.6, React 19.3, Tailwind 4.3, motion 12.43, vitest 5 |
+| P1 Chrome | ✅ | `1fab3b6` | Header T6, MobileMenu, Footer T8, transition T9, 404, PageHero |
+| P2 Home A | ✅ | `ab00eb3` | HEAL letters script, I1 hero (static + desktop zoom), T3 statement, I7 rows; real logo marks |
+| P3 Home B | ✅ | `5679cc6` | BreakoutTile (I5), DriftColumns (I8), PulseSteps (T4), I2 shutter, marquee (T5), shop tiles |
+| P4 Planning + Service | ✅ | `93231bc` | I6 sticky swap + stacked fallback, How it works, What we service (I5 + T10 scan), How we help |
+| P5 Disposition + forms | ✅ | `32fb9b8` | Disposition page; 4 zod schemas, Server Actions, Turnstile, Resend + dev fallback, Blob uploads, HealForm; FAQ answers |
+| P6 About, Shop, Contact | ✅ | `bbd15fe` | I4 collage, The name (T8), null-safe team, store cards (hidden until URLs), stock check, contact form + details + map |
+| P7 SEO + legal | ✅ | `b8ecf45` | Metadata + OG/Twitter per route, share image, icons, LocalBusiness + FAQPage JSON-LD, sitemap, robots, legal holding pages, redirects scaffold |
+| P8 Polish | ✅ | `5863cf7` | React 19 lint fixes, optional intro (off), orphans + GSAP removed, reduced-motion audit, bundle noted |
+| P9 Launch prep | ✅ | see `git log --grep "p9"` | Checklist below; no check failed, so no code changes |
 
-**Route count:** 12 after P1 (unchanged from P0): `/`, `/equipment-planning`, `/asset-disposition`, `/service`, `/about`, `/shop`, `/contact`, `/privacy`, `/terms`, `/_not-found`, `/robots.txt`, `/sitemap.xml`. Expected after P7: 14 (+ `/opengraph-image`, + `/api/upload` in P5).
+**Route count: 17.** `/`, `/equipment-planning`, `/asset-disposition`, `/service`, `/about`, `/shop`, `/contact`, `/privacy`, `/terms`, `/_not-found`, `/robots.txt`, `/sitemap.xml`, `/opengraph-image`, `/icon.png`, `/apple-icon.png` (all static `○`), and `/api/upload` (dynamic `ƒ`). That's the 14 the plan expected plus the two app icons; the 17th line in the build output is the 404.
 
-**Repo:** `main` → https://github.com/Qasim21569/healmedllc (remote added, nothing pushed yet).
+**Verification at P9:** `npx tsc --noEmit` clean · `npx eslint src` clean · `npx next build` green, 17 routes · `npx vitest run` 31 tests green (content rules, photo ids, pending values, schemas, submit pipeline, Turnstile, email, SEO, JSON-LD) · SSR greps: every page's headings, forms and anchors are in its `.html`; `<title>`, `application/ld+json` and `legalName":"Heal Med LLC"` on every route; `og:image` on every route.
+
+**Repo:** `main` → https://github.com/Qasim21569/healmedllc. P0 and P1 are pushed; P2 to P9 are local until Qasim says push.
 
 ## Where things are
 
-- Copy: `src/content/*.ts` (typed; `null` = waiting on Ahmed). Line arrays are hand-set; `tests/content.test.ts` enforces ≤ 45 chars, no em dashes, no "!", no "HEAL Medical", photo ids exist.
-- Primitives: `src/components/ui/` (MaskText, SwapMaskText, Reveal, RevealImage, ParallaxContainer, ResponsiveImage, ClipImageContainer, HoverReveal, Marquee, ResponsiveMarquee, Accordion, StyledLink, Button, SmartLink, Eyebrow, Photo, Icon). `src/components/layout/Section.tsx`.
-- Hooks: `useMediaQuery` (server snapshot `false`), `useIsDesktop`, `useIsMobile`, `useReducedMotion`, `useMaskImage`.
-- Chrome: `src/components/layout/` (SiteChrome, Header, MobileMenu, Footer, Section), `src/components/providers/TransitionProvider.tsx`, `src/app/(site)/template.tsx`, `src/hooks/useHeaderTheme.ts`, `src/components/sections/PageHero.tsx`, `LegalBody.tsx`, `src/app/not-found.tsx`.
-- Tokens: `src/app/tokens.css` (copy of `design/tokens.css`), multiplier + `@theme` + `type-*` utilities in `src/app/globals.css`.
+- **Pages:** `src/app/(site)/*/page.tsx`. Each page file lists its sections and theme rhythm in a comment.
+- **Copy:** `src/content/*.ts` (typed; `null` = waiting on Ahmed). One file per page, plus `site.ts` (nav, contact, footer, stores, socials), `forms.ts`, `photos.ts`, `seo.ts`, `legal.ts`.
+- **Sections:** `src/components/sections/` (PageHero, SectionHead, StepCards, FormSection, LegalBody; `home/`, `planning/`, `service/`).
+- **Primitives:** `src/components/ui/`: MaskText, SwapMaskText, Reveal, RevealImage, ParallaxContainer, ResponsiveImage, Marquee, ResponsiveMarquee, Accordion, Button, SmartLink, Eyebrow, Photo, Icon, Wordmark, ScrollFillText (T3), HoverFollowImage (I7), BreakoutTile (I5), DriftColumns (I8), PulseSteps (T4), Collage (I4).
+- **Chrome:** `src/components/layout/` (SiteChrome, Header, MobileMenu, Footer, Section, Intro), `src/components/providers/` (SmoothScrollProvider, TransitionProvider), `src/app/(site)/template.tsx`, `src/app/not-found.tsx`.
+- **Forms:** `src/lib/forms/` (schemas, config, submit, actions, email), `src/components/forms/` (HealForm, FileField, useTurnstile), `src/app/api/upload/route.ts`.
+- **SEO:** `src/lib/seo.ts`, `src/lib/jsonld.ts`, `src/app/opengraph-image.tsx`, `sitemap.ts`, `robots.ts`, `icon.png`, `apple-icon.png`; `redirects.ts` at the repo root.
+- **Scripts:** `npm run build:letters` (HEAL paths for I1, needs `scripts/fonts/HostGrotesk-Medium.ttf`, gitignored) and `npm run build:logo` (logo marks + icons from `public/brand/heal-logo-violet.png`). `assets/HostGrotesk-Medium.ttf` is committed for the share image.
 
 ## Decisions made during the build
 
+**Setup and stack**
+
 - **2026-11-18 · `../HEAL-references/` does not exist.** Nothing to note.
-- **2026-11-18 · Cache Components off.** The scaffold enabled `cacheComponents` + `partialPrefetching`. With it on, Next keeps up to 3 previous routes mounted but hidden (React Activity), which leaves duplicate anchor ids (`#offer`, `#request`) and stale form state in the DOM and fights the T9 transition. The site is fully static either way (all routes `○`).
-- **2026-11-18 · Tailwind via `@tailwindcss/postcss`** (CLAUDE.md stack). The scaffold had switched to a `@tailwindcss/turbopack` loader; replaced.
-- **2026-11-18 · motion pinned to `^12`** (stack says v12; npm resolved v14). `@types/node` bumped to 24 for the vitest 5 peer range.
-- **2026-11-18 · `turbopack.root` pinned** in `next.config.ts`: a stray `package-lock.json` in `C:\Users\qasim` was being picked up as the workspace root.
-- **2026-11-18 · Next 16 image API:** `priority` is deprecated; `Photo` takes `preload` (sets `preload`, `fetchPriority="high"`, `loading="eager"`). `images.qualities: [75]` is now required config; `localPatterns` allow `/photos/**` and `/brand/**`.
-- **2026-11-18 · ResponsiveMaskText folded into MaskText.** `MaskText lines={Lines}` renders `desktop` on the server and swaps to `mobile` after hydration; `lines={[...]}` still works. One component, same behaviour, and an `as` prop (`h1`, `h2`, `p`...) so headings stay semantic.
-- **2026-11-18 · Reduced motion = end state** everywhere: `useReducedMotion()` (media query via `useSyncExternalStore`) sets durations to 0 and reveals immediately. `<MotionConfig reducedMotion="user">` wraps the site as a backstop. Reveal components mark their animated nodes `data-reveal`, and a `<noscript>` style shows them without JS.
-- **2026-11-18 · ResponsiveImage keeps one DOM.** It toggles the parallax transform instead of swapping wrappers, so the image never remounts. `from="md" | "lg"` (default lg, per §7).
-- **2026-11-18 · ResponsiveMarquee fix:** the brahma original returned `null` until the viewport was known (rule 10). It now renders the desktop config first.
-- **2026-11-18 · Fonts:** next/font variables are `--font-host` and `--font-geist-mono`, mapped to `--font-sans` / `--font-mono` in `@theme` (the playbook's `--font-sans: var(--font-sans)` would be circular).
-- **2026-11-18 · Section has `surface` as well as `tint`:** PAGES marks several sections "light (surface)".
-- **2026-11-18 · Home "What we do" row photos: 03, 18, 28.** PAGES and PHOTO-PIPELINE disagree on row 1 (03 vs 14); 03 is the follow-card shot.
-- **2026-11-18 · How `[confirm]` copy was split** (only the unconfirmed part is null; drafts kept as comments in the content file):
-  - Planning step 01: "A call about your equipment and goals." (the 30-minute length is pending).
-  - Disposition steps 03 and 04: title only, body `null` (logistics and payment terms pending).
-  - Disposition "Why sell": the "Paperwork for your records" card is hidden (documents pending), 3 cards show.
-  - Disposition FAQ: the two unanswered questions are hidden; 2 items show.
+- **2026-11-18 · Cache Components off.** The scaffold enabled `cacheComponents` + `partialPrefetching`. With it on, Next keeps up to 3 previous routes mounted but hidden (React Activity), which leaves duplicate anchor ids (`#offer`, `#request`) and stale form state in the DOM and fights the T9 transition. The site is fully static either way.
+- **2026-11-18 · Tailwind via `@tailwindcss/postcss`** (CLAUDE.md stack); the scaffold used a turbopack loader.
+- **2026-11-18 · motion pinned to `^12`** (npm resolved v14). `@types/node` 24 for the vitest 5 peer range. GSAP and `@gsap/react` removed in P8: nothing needed a timeline (D7).
+- **2026-11-18 · `turbopack.root` pinned:** a stray `package-lock.json` in `C:\Users\qasim` confused workspace detection.
+- **2026-11-18 · Next 16 image API:** `priority` is deprecated; `Photo` takes `preload` (preload link + `fetchPriority="high"`). `images.qualities: [75]` is required config; `localPatterns` allow `/photos/**` and `/brand/**`.
+- **2026-11-18 · Tokens imported into `@layer base`,** so `bg-tint`, `bg-surface` and `bg-transparent` can override the background `tokens.css` paints on every `[data-theme]` element.
+- **2026-11-18 · Fonts:** next/font variables `--font-host` / `--font-geist-mono`, mapped to `--font-sans` / `--font-mono` in `@theme`.
+- **2026-11-18 · Prettier** (printWidth 100, `npm run format`). ESLint passes with the React 19 hooks rules.
+
+**Components and motion**
+
+- **2026-11-18 · ResponsiveMaskText folded into MaskText.** `lines={Lines}` renders `desktop` on the server and swaps to `mobile` after hydration; an `as` prop keeps headings semantic.
+- **2026-11-18 · Reduced motion = end state** everywhere (`useReducedMotion` via `useSyncExternalStore`); `<MotionConfig reducedMotion="user">` as a backstop. Animated nodes carry `data-reveal`, and a `<noscript>` style shows them without JS.
+- **2026-11-18 · Signatures render the static composition on the server** (I1 hero, I2 shutter, I6 services) and upgrade after hydration on desktop (≥1024, fine pointer, no reduced motion). So every service's copy and the full hero text are in the HTML, and no component returns `null`.
+- **2026-11-18 · I1:** letters generated from Host Grotesk Medium (Google Fonts static TTF), tracking -0.05em, viewBox 2165×700, stem width 110. The zoom targets the L stem; end scale is computed so the stem, scaled about its own centre, covers the stage (×1.1), and the scale curve is exponential so the zoom reads as constant speed. Letters box is height-limited so the h1 always fits under it.
+- **2026-11-18 · I6:** photo layers stripe away around each boundary (progress 1/3 and 2/3) instead of across the whole step, so the photo changes when the text does. Pills scroll to the anchor divs at 0/100/200vh.
+- **2026-11-18 · Transition (T9) is Motion + React state,** not GSAP + zustand. `SmartLink` intercepts plain clicks on internal route links; `(site)/template.tsx` calls `pageMounted()` on mount; 2.5s safety reveal. The template lives in `(site)/` because a root template never remounts across a route group.
+- **2026-11-18 · `Section` takes a `ref`,** so the sticky signatures use `Section` too.
+- **2026-11-18 · Header:** hides on scroll down past 240px, returns on scroll up; solid + shadow after 80px; focus shows it. Mobile menu links use a new `--t-menu` var.
+- **2026-11-18 · 404 has the header but no footer** (no two brand sections together).
+- **2026-11-18 · Optional intro (T12)** mounts client-side only, so a JS failure can never leave the page covered. Off (`site.intro.enabled: false`).
+
+**Logo**
+
+- **2026-11-18 · Real logo in use (Qasim's instruction).** `public/brand/heal-logo-violet.png` is the supplied artwork: a white mark on a solid violet rectangle (not a violet logo). `scripts/build-logo.mjs` extracts the mark into transparent `heal-logo-white.png` (brand/dark) and `heal-logo-violet-mark.png` (light), which the header crossfades with the theme, and crops the H circle into `icon.png` / `apple-icon.png`. The artwork reads "HEAL MEDICAL LLC"; site text still follows the legal name (open question for Ahmed). The source is 360px wide, so the icons are soft: swap for an SVG when there is one.
+
+**Content**
+
+- **2026-11-18 · Home "What we do" row photos: 03, 18, 28** (PAGES and PHOTO-PIPELINE disagreed on row 1).
+- **2026-11-18 · How `[confirm]` copy was split** (only the unconfirmed part is null; drafts kept as comments in the content files):
+  - Planning step 01: "A call about your equipment and goals." (30-minute length pending).
+  - Disposition steps 03 and 04: title only (logistics and payment terms pending).
+  - Disposition "Why sell": the "Paperwork for your records" card is hidden; 3 cards show.
   - Service "Repair" row: "Fault finding and fixes." (on-site pending).
   - Planning CMMS card: sentence shown, partner name `null`.
-  - About team: Ahmed shows with name and portrait slot; role and bio `null`. Second member hidden.
-  - Service card spec lines, hours, social links, store URLs: `null`.
-  - Store buttons and store links render nothing while the URLs are `null`.
+  - About team: Ahmed shows with name and portrait slot; role and bio `null`; second member hidden.
+  - Service spec lines, hours, social links, store URLs: `null`.
+  - Home and Disposition "Infusion pumps", "Imaging", "Surgical and OR" tiles hidden.
+- **2026-11-18 · FAQ answers written for the site (Qasim's instruction).** Five Q&As in `content/disposition.ts`, worded to avoid unconfirmed specifics (no wipe standard, no service radius, no lot minimums). "Do you buy equipment that doesn't work?" opens with "Often, yes", which matches the page's "Working or not, most hospital equipment has value". Also emitted as FAQPage JSON-LD. **Ahmed to confirm.**
+- **2026-11-18 · Shop:** the categories section has an eyebrow only (CONTENT gives no h2). Tiles link to `#stock-check` until store URLs exist. The store cards section renders nothing while both URLs are `null`.
+- **2026-11-18 · Contact map:** the static map is photo slot `map` (placeholder until exported); the tile links to Google Maps.
 
-- **2026-11-18 · Tokens imported into `@layer base`.** `tokens.css` paints every `[data-theme]` element with `--canvas`. Unlayered, that beat Tailwind utilities, so `bg-tint`, `bg-surface` and `bg-transparent` (header at the top) silently lost. Layered, utilities win.
-- **2026-11-18 · Transition (T9) is Motion + React state,** not GSAP + zustand as in otis-valen. `SmartLink` intercepts plain clicks on internal route links: the panel rises (0.5s), the route is pushed, `(site)/template.tsx` calls `pageMounted()` on mount, and the panel leaves off the top (0.5s). A 2.5s safety timer reveals if a page never mounts. Same-page and hash links, back/forward and reduced motion skip it.
-- **2026-11-18 · Template lives in `src/app/(site)/template.tsx`,** not `src/app/template.tsx`. A root template is keyed by the route-group segment, which is the same for every page, so it would never remount.
-- **2026-11-18 · Logo on brand/dark:** the violet PNG is turned white with `brightness-0 invert` on brand and dark header themes. Swap for a white SVG when Ahmed sends vectors.
-- **2026-11-18 · 404 has the header but no footer:** the 404 is one brand section and the footer is brand, and two brand sections never sit together.
-- **2026-11-18 · Header scroll behaviour:** hides on scroll down past 240px, returns on scroll up; solid canvas + `--shadow-float` after 80px. Focus moving into the header shows it.
-- **2026-11-18 · Mobile menu link size** uses a new `--t-menu` var (40 at 375; 56 on the 1440 scale, so ~40px at 1023px).
-- **2026-11-18 · Prettier added** (printWidth 100, `npm run format`).
+**Forms**
+
+- **2026-11-18 · One `HealForm` drives all four forms** from `lib/forms/config.ts`; the zod schema is shared with the Server Action. `lib/forms/submit.ts` holds the pipeline outside Next so it's unit-tested.
+- **2026-11-18 · Turnstile without a secret is skipped with a server warning** (dev). Production must set `TURNSTILE_SECRET_KEY` (checklist).
+- **2026-11-18 · Uploads:** `@vercel/blob` 2.x client uploads, `access: "public"` with a random suffix (unguessable URLs that Ahmed can open from the email); multipart above 5 MB. `/api/upload` returns 503 when `BLOB_READ_WRITE_TOKEN` is unset; the form then shows the "email the file instead" copy and still sends.
+- **2026-11-18 · Service request urgency uses chips** (radio pills), like the contact intent.
 
 ## Needs Qasim's eyes
 
-**P1 (checkpoint 1)**
+Everything from P2 on is unreviewed. Grouped by page; widths to check: 375, 390, 768, 1024, 1280, 1440, 1920.
 
-- **T6 header theme:** white on the brand hero, violet over light sections, flipping at the header's centre line. Inner pages only have hero + footer so far; the flip shows over the light strip under each hero band.
-- **Header scroll states:** transparent at the top, solid + shadow after 80px, hides after 240px scrolling down, returns on scroll up.
-- **Logo filtered to white** on brand: check the PNG stays crisp at 32/36px tall.
-- **Mobile menu (under 1024px):** 44px round button, full-screen brand panel, links ~40px with mono index and stagger, Esc closes, Tab stays inside, page doesn't scroll behind it.
-- **Footer:** CTA row, columns (stacked / 2x2 at 768 / 4 across at 1024), legal row, giant HEAL cropped by the bottom edge with the T8 rise. The crop is a `0.62em` frame, easy to tune.
-- **Page transition T9:** violet panel up 0.5s, page swap, panel off the top 0.5s, small "HEAL" in the middle. Try header links, footer links and the logo.
-- **PageHero:** breadcrumb, giant h1, lead left / buttons right, 21:9 band (4:3 on phones) straddling into the next section, I3 wipe on entry, I4 parallax from 1024px.
-- **Interim rhythm:** inner pages go brand hero → brand footer until their sections land (P4 to P6).
+**Global**
+- **Multiplier jump at 767 → 768px:** `type-display` is ~94px at 767px and ~51px at 768px (spec). Fallback: cap the mobile multiplier with `min(calc(100vw / 375), 1.4px)`.
+- **Mobile line breaks** were set by estimate (~0.48em per character). Check every headline at 375.
+- **Header:** logo crossfade violet ↔ white; theme flips over every section; scroll states.
+- **Footer** HEAL crop (`0.62em` frame) and the T8 rise. **Transition** timing (0.5s each way).
 
-**P0**
+**Home `/`**
+- **I1 hero** (≥1024, fine pointer): letters box size against the h1 at 1280×720 and 1440×900; zoom speed and the L-stem landing; caption fade; header turning light over the photo. Static version at 375/768.
+- **T3 statement** fill range; **I7** card size (300px at 1440), follow lag and tilt; touch rows expanding with an inline photo.
+- **I8 drift** amounts and the middle column's start offset; **I5** breakout height (118%) and hover lift.
+- **T4 pulse line:** spike position, dot, numerals lighting; vertical line on phones.
+- **I2 shutter:** line split distance (±38vh), window opening, copy over the night gradient at 0.6.
+- **Marquee** speed; **shop tiles** snapping sideways on phones.
 
-- **Multiplier jump at 767 → 768px.** Per spec, mobile uses `100vw/375` and desktop `100vw/1440`, so `type-display` is ~94px at 767px and ~51px at 768px. The playbook's fallback is to cap the mobile multiplier with `min(calc(100vw / 375), 1.4px)`. Say the word and I'll apply it.
-- **Mobile line breaks** in `src/content/*` were set by estimate (Host Grotesk ~0.48em per character). Check headlines at 375 and 390.
+**Equipment Planning:** I6 pills, swap direction, stripe timing on the photo, CMMS card; pill clicks landing on the right service; stacked layout under 1024.
+**Asset Disposition:** tile grid with 5 tiles (4 + 1 at 1440); pulse steps with two title-only steps; outlined cards; offer form card and upload field; FAQ accordion.
+**Service:** scan line on card hover; dashed banner; How we help rows; service form.
+**About:** collage speeds and offsets; The name band (HEAL size, sentence placement); values (first rule violet); team card with one person and no role/bio; careers.
+**Shop:** categories snap on phones; stock check inline row. Store cards are hidden until URLs exist (set a URL in `site.ts` temporarily to review them).
+**Contact:** mega h1 size; intent chips; dark details card; map tile with pin.
+**Forms (all):** error states, "Sending…", thank-you panel. Without keys, submissions log to the dev server console and show success.
 
 ## Blocked on Ahmed
 
-See `OPEN-QUESTIONS.md`. Nothing blocks the build: placeholders are `null` and render nothing.
+See `OPEN-QUESTIONS.md`. Nothing blocks the build: placeholders are `null` and render nothing. New since P0: confirm the FAQ answers; SVG logo.
 
 ## Known defects
 
-_None yet._
+_None known. Visual review pending._
 
-## Launch checklist (fill in during P9)
+## Bundle (P8)
 
-- [ ] Vercel project, env vars from `.env.example`
-- [ ] Resend: domain verified, `CONTACT_FROM_EMAIL` on it, test email received
-- [ ] Turnstile: production keys, site domain added
-- [ ] Vercel Blob store connected
-- [ ] Domain healmedllc.com pointed, HTTPS, www redirect
-- [ ] Old WordPress URL redirects
-- [ ] Search Console + sitemap submitted
-- [ ] Real photos swapped in, `[need]` values filled
+16 JS chunks, 1,098 KB raw / **342 KB gzip in total across all routes** (includes motion, Lenis, react-hook-form, zod and the Blob client for the form pages). Largest chunk 79 KB gzip. CSS 10 KB gzip. Next 16's build output no longer prints per-route sizes; measure first-load JS per page in Lighthouse once it's deployed.
+
+## Launch checklist (P9)
+
+Code-side checks all pass (see Verification above). These need accounts, keys or DNS, so they're Qasim's (and Ahmed's) to do:
+
+- [ ] **Vercel project** from the GitHub repo; framework Next.js; Node 22+. Set every var in `.env.example` for Production (and Preview if wanted).
+- [ ] **`NEXT_PUBLIC_SITE_URL=https://healmedllc.com`** (sitemap, robots, canonical and OG URLs use it).
+- [ ] **Resend:** add and verify `healmedllc.com` (SPF/DKIM DNS records), set `RESEND_API_KEY`, `CONTACT_FROM_EMAIL` (e.g. `HEAL website <website@healmedllc.com>`) and `CONTACT_TO_EMAIL`. Send one test from each form and check reply-to goes to the sender.
+- [ ] **Turnstile:** create a widget (Invisible/Managed) for `healmedllc.com` (+ the Vercel preview domain if testing there); set `NEXT_PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY`. Without the secret the spam check is skipped.
+- [ ] **Vercel Blob:** create a store and connect it to the project (sets `BLOB_READ_WRITE_TOKEN`); upload a 10 MB xlsx through the Offer form and open the link in the email.
+- [ ] **Domain:** point healmedllc.com to Vercel, HTTPS on, `www` redirecting to the apex (Vercel domain settings). Confirm who owns DNS today (OPEN-QUESTIONS).
+- [ ] **Old WordPress redirects:** export the old sitemap, add entries to `redirects.ts`, redeploy, spot-check a few old URLs.
+- [ ] **Search Console:** verify the domain, submit `https://healmedllc.com/sitemap.xml`.
+- [ ] **Content:** real photos in `public/photos/` + `src` in `photos.ts`; store URLs, socials, hours, team role/bio, `[confirm]` items in `src/content/`; FAQ answers confirmed; legal text reviewed, then `approved: true` in `content/legal.ts`.
+- [ ] **Lighthouse (mobile)** on the deployed Home and one inner page: targets Performance ≥ 90, Accessibility 100, Best Practices 100, SEO 100, LCP < 2.5s.
+- [ ] **Vercel Analytics** (D-out-of-scope allows it): enable in the dashboard if wanted; no code change needed beyond adding `@vercel/analytics` if chosen.

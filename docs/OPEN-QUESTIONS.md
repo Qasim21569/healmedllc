@@ -1,13 +1,13 @@
 # OPEN-QUESTIONS
 
-> For Ahmed (and Qasim). **Last updated:** 2026-11-18
+> For Ahmed (and Qasim). **Last updated:** 2026-11-18 (end of build)
 
 The build does not block on these: each has a `null` field in `src/content/` that renders nothing (or a neutral fallback) until filled.
 
 ## Needed before launch
 
 - [ ] **Name on the logo:** the legal name is Heal Med LLC but the logo artwork reads "HEAL MEDICAL LLC". Keep the logo as is, or update it to "HEAL" / "Heal Med LLC"? The site text uses HEAL and Heal Med LLC either way.
-- [ ] **Logo as SVG** (vector file from whoever made it). Until then the header uses the PNG.
+- [ ] **Logo as SVG** (vector file from whoever made it). Until then the site uses transparent marks extracted from the 360px PNG (soft at icon sizes).
 - [ ] Hosting on Vercel OK? Who owns the healmedllc.com DNS today?
 - [ ] eBay store URL and DOTmed listings URL
 - [ ] Ahmed's title for the site, a 2–3 line bio and a portrait
@@ -17,6 +17,8 @@ The build does not block on these: each has a `null` field in `src/content/` tha
 - [ ] Business hours
 - [ ] Real LinkedIn and Instagram URLs
 - [ ] Where form submissions go (info@healmedllc.com?) and who replies; can we send from website@healmedllc.com (needs a DNS record for Resend)?
+
+- [ ] **FAQ answers** on Asset Disposition were written for the site (equipment that doesn't work, single items vs lots, patient data, where we operate, what to send). Are they accurate?
 
 ## Nice to have
 
