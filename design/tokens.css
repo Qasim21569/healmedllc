@@ -1,0 +1,112 @@
+/* HEAL (Heal Med LLC) colour, radius and theme tokens. Source: design/tokens.json.
+   Type and spacing are NOT here: they live in globals.css on the --multiplier system (BUILD-PLAYBOOK §3). */
+
+:root {
+  --violet-50: #EBECF8;
+  --violet-100: #DEDFF4;
+  --violet-200: #C8C9EB;
+  --violet-300: #ABA9DE;
+  --violet-400: #8D88CF;
+  --violet-500: #776DC3;
+  --violet-600: #6556B8;
+  --violet-700: #524696;
+  --violet-800: #3F3676;
+  --violet-900: #2E2757;
+  --violet-950: #1F1A3D;
+  --graphite-0: #FFFFFF;
+  --graphite-25: #FAFAFD;
+  --graphite-50: #F5F5F9;
+  --graphite-100: #EAEAF1;
+  --graphite-200: #DADAE2;
+  --graphite-300: #BDBDC6;
+  --graphite-400: #9797A1;
+  --graphite-500: #5F5E6B;
+  --graphite-600: #575761;
+  --graphite-700: #3F3F48;
+  --graphite-800: #282830;
+  --graphite-900: #18171E;
+  --graphite-950: #0D0D12;
+  --logo-white: #F4F6FC;
+  --ice-100: #DCE3F2;
+  --coral-500: #F6623D;
+  --coral-700: #AF2C1F;
+  --radius-none: 0px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+  --ease-heal: cubic-bezier(0.24, 0.43, 0.15, 0.97); /* the only easing on the site */
+  --header-h: 76px;
+}
+
+:root, [data-theme="light"] {
+  --canvas: var(--logo-white);
+  --surface: #FFFFFF;
+  --surface-tint: var(--violet-100);
+  --night: var(--violet-950);
+  --ink: var(--violet-950);
+  --body: var(--graphite-700);
+  --muted: var(--graphite-500);
+  --hairline: var(--graphite-200);
+  --control-border: #85858F;
+  --brand: var(--violet-600);
+  --brand-hover: var(--violet-700);
+  --brand-soft: var(--violet-100);
+  --on-brand: #FFFFFF;
+  --pulse: var(--violet-600);
+  --danger: var(--coral-700);
+  --focus: var(--violet-500);
+  --photo-ice: var(--ice-100);
+  --photo-lilac: var(--violet-100);
+  --shadow-float: 0 24px 48px -24px rgba(31,26,61,0.28);
+  background-color: var(--canvas);
+  color: var(--ink);
+}
+
+[data-theme="dark"] {
+  --canvas: var(--violet-950);
+  --surface: var(--violet-900);
+  --surface-tint: var(--violet-800);
+  --night: var(--violet-800);
+  --ink: var(--logo-white);
+  --body: #C9C8DE;
+  --muted: #A6A4C4;
+  --hairline: #FFFFFF1F;
+  --control-border: #A6A4C4;
+  --brand: var(--violet-300);
+  --brand-hover: var(--violet-200);
+  --brand-soft: var(--violet-900);
+  --on-brand: var(--violet-950);
+  --pulse: var(--violet-300);
+  --danger: var(--coral-500);
+  --focus: var(--violet-300);
+  --photo-ice: var(--ice-100);
+  --photo-lilac: var(--violet-100);
+  --shadow-float: 0 24px 48px -24px rgba(0,0,0,0.6);
+  background-color: var(--canvas);
+  color: var(--ink);
+}
+
+[data-theme="brand"] {
+  --canvas: var(--violet-600);
+  --surface: var(--violet-700);
+  --surface-tint: var(--violet-500);
+  --night: var(--violet-950);
+  --ink: #FFFFFF;
+  --body: var(--logo-white);
+  --muted: var(--violet-50);
+  --hairline: #FFFFFF33;
+  --control-border: var(--violet-50);
+  --brand: var(--logo-white);
+  --brand-hover: #FFFFFF;
+  --brand-soft: var(--violet-700);
+  --on-brand: var(--violet-600);
+  --pulse: #FFFFFF;
+  --danger: #FFE1DA;
+  --focus: #FFFFFF;
+  --photo-ice: var(--ice-100);
+  --photo-lilac: var(--violet-100);
+  --shadow-float: 0 24px 48px -24px rgba(31,26,61,0.45);
+  background-color: var(--canvas);
+  color: var(--ink);
+}
