@@ -13,7 +13,7 @@
 | P1 Chrome | ✅ done | see `git log --grep "feat(p1)"` | Header T6, MobileMenu, Footer T8, transition T9, 404, PageHero |
 | P2 Home A (I1, statement, I7) | ✅ done | see `git log --grep "feat(p2)"` | HEAL letters script, I1 hero (static + desktop zoom), T3 statement, I7 rows; real logo marks |
 | P3 Home B (I8, I5, T4, I2, marquee, shop) | ✅ done | see `git log --grep "feat(p3)"` | BreakoutTile, DriftColumns, PulseSteps, I2 shutter, marquee, shop tiles; mobile per §7 |
-| P4 Planning + Service | ⬜ | | |
+| P4 Planning + Service | ✅ done | see `git log --grep "feat(p4)"` | I6 sticky swap + stacked fallback, How it works, What we service (I5 + scan), How we help. Service request form landed in P5 with the forms infra |
 | P5 Disposition + forms | ⬜ | | |
 | P6 About, Shop, Contact | ⬜ | | |
 | P7 SEO + legal | ⬜ | | |
