@@ -20,9 +20,9 @@
 | P8 Polish | ✅ | `5863cf7` | React 19 lint fixes, optional intro (off), orphans + GSAP removed, reduced-motion audit, bundle noted |
 | P9 Launch prep | ✅ | see `git log --grep "p9"` | Checklist below; no check failed, so no code changes |
 
-**Route count: 17.** `/`, `/equipment-planning`, `/asset-disposition`, `/service`, `/about`, `/shop`, `/contact`, `/privacy`, `/terms`, `/_not-found`, `/robots.txt`, `/sitemap.xml`, `/opengraph-image`, `/icon.png`, `/apple-icon.png` (all static `○`), and `/api/upload` (dynamic `ƒ`). That's the 14 the plan expected plus the two app icons; the 17th line in the build output is the 404.
+**Route count: 16** (the build table). `/`, `/equipment-planning`, `/asset-disposition`, `/service`, `/about`, `/shop`, `/contact`, `/privacy`, `/terms`, `/_not-found`, `/robots.txt`, `/sitemap.xml`, `/opengraph-image`, `/icon.png`, `/apple-icon.png` (all static `○`) and `/api/upload` (dynamic `ƒ`): the 14 the plan expected plus the two app icons. ("Generating static pages 17/17" in the log counts Next's internal error page too.)
 
-**Verification at P9:** `npx tsc --noEmit` clean · `npx eslint src` clean · `npx next build` green, 17 routes · `npx vitest run` 31 tests green (content rules, photo ids, pending values, schemas, submit pipeline, Turnstile, email, SEO, JSON-LD) · SSR greps: every page's headings, forms and anchors are in its `.html`; `<title>`, `application/ld+json` and `legalName":"Heal Med LLC"` on every route; `og:image` on every route.
+**Verification at P9:** `npx tsc --noEmit` clean · `npx eslint src` clean · `npx next build` green, 16 routes · `npx vitest run` 31 tests green (content rules, photo ids, pending values, schemas, submit pipeline, Turnstile, email, SEO, JSON-LD) · SSR greps: every page's headings, forms and anchors are in its `.html`; `<title>`, `application/ld+json` and `legalName":"Heal Med LLC"` on every route; `og:image` on every route.
 
 **Repo:** `main` → https://github.com/Qasim21569/healmedllc. P0 and P1 are pushed; P2 to P9 are local until Qasim says push.
 
@@ -49,6 +49,7 @@
 - **2026-11-18 · Next 16 image API:** `priority` is deprecated; `Photo` takes `preload` (preload link + `fetchPriority="high"`). `images.qualities: [75]` is required config; `localPatterns` allow `/photos/**` and `/brand/**`.
 - **2026-11-18 · Tokens imported into `@layer base`,** so `bg-tint`, `bg-surface` and `bg-transparent` can override the background `tokens.css` paints on every `[data-theme]` element.
 - **2026-11-18 · Fonts:** next/font variables `--font-host` / `--font-geist-mono`, mapped to `--font-sans` / `--font-mono` in `@theme`.
+- **2026-11-18 · Layouts type their props explicitly** instead of Next's generated `LayoutProps`, so `tsc` passes on a clean checkout before any build.
 - **2026-11-18 · Prettier** (printWidth 100, `npm run format`). ESLint passes with the React 19 hooks rules.
 
 **Components and motion**
