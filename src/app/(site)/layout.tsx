@@ -1,9 +1,5 @@
-import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
+import { SiteChrome } from "@/components/layout/SiteChrome";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <SmoothScrollProvider>
-      <main id="main">{children}</main>
-    </SmoothScrollProvider>
-  );
+  return <SiteChrome>{children}</SiteChrome>;
 }

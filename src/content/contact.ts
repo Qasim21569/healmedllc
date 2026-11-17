@@ -5,7 +5,9 @@ export const contact = {
   hero: {
     breadcrumb: { index: "06", label: "Contact" },
     h1: { desktop: ["Let's talk."] } satisfies Lines,
-    lead: { desktop: ["Tell us what you have, what you need", "or what's broken."] } satisfies Lines,
+    lead: {
+      desktop: ["Tell us what you have, what you need", "or what's broken."],
+    } satisfies Lines,
   },
 
   form: {

@@ -53,7 +53,7 @@ export function ParallaxContainer({
     <div className={cn("size-full overflow-hidden", frameClassName)} ref={frame}>
       <motion.div
         style={{ transform: enabled ? transform : "none", ...style }}
-        className={cn("size-full origin-bottom", className)}
+        className={cn("relative size-full origin-bottom", className)}
       >
         {children}
       </motion.div>

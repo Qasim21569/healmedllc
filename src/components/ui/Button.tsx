@@ -45,12 +45,7 @@ export function Button({
   onClick?: () => void;
   className?: string;
 }) {
-  const classes = cn(
-    base,
-    variants[variant],
-    block && "max-md:min-h-13 max-md:w-full",
-    className,
-  );
+  const classes = cn(base, variants[variant], block && "max-md:min-h-13 max-md:w-full", className);
 
   const iconName = external && icon === "arrow" ? "arrow-up-right" : icon;
   const content = (

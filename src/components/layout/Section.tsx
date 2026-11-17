@@ -7,7 +7,7 @@ export type Theme = "light" | "dark" | "brand";
  * Section (CLAUDE.md rule 5). Every section is one of these: it sets
  * `data-theme`, its background and its text colour explicitly, so colour never
  * inherits across a theme boundary. Full-bleed, inset by `px-margin-edge`
- * (no max-width container, rule 6).
+ * (no page container, rule 6).
  *
  * - `tint`: the page's one tint band (`--surface-tint`) in a light section.
  * - `surface`: the white surface step (`--surface`) in a light section.

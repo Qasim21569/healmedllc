@@ -21,7 +21,8 @@ const backdrops = {
  *
  * - Default: an aspect-ratio box from the entry's width/height (or `ratio`).
  * - `fill`: fills the positioned parent, which owns the size.
- * - `preload`: the LCP image (Home hero). Next 16 replaced `priority` with it.
+ * - `preload`: the LCP image (Home hero): preload link + fetchPriority high.
+ *   Next 16 replaced `priority` with it.
  * - `sizes` is required: every image declares its layout width.
  */
 export function Photo({
@@ -71,10 +72,13 @@ export function Photo({
           sizes={sizes}
           preload={preload}
           fetchPriority={preload ? "high" : undefined}
-          loading={preload ? "eager" : "lazy"}
+          loading={preload ? undefined : "lazy"}
           placeholder={entry.blurDataURL ? "blur" : "empty"}
           blurDataURL={entry.blurDataURL}
-          className={cn(objectFit === "contain" ? "object-contain" : "object-cover", imageClassName)}
+          className={cn(
+            objectFit === "contain" ? "object-contain" : "object-cover",
+            imageClassName,
+          )}
         />
       ) : (
         <div

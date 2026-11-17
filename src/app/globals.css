@@ -1,5 +1,7 @@
 @import "tailwindcss";
-@import "./tokens.css";
+/* Tokens sit in the base layer so utilities (bg-tint, bg-surface,
+   bg-transparent) can override the per-theme background they paint. */
+@import "./tokens.css" layer(base);
 
 /* ─── Fluid multiplier (D5) ─────────────────────────────────────────────
    Every size is a proportion of viewport width, not a breakpoint step.
@@ -22,6 +24,7 @@
   --t-body: clamp(15px, calc(16 * var(--multiplier)), 18px);
   --t-small: clamp(13px, calc(14 * var(--multiplier)), 15px);
   --t-eyebrow: clamp(11px, calc(12 * var(--multiplier)), 13px);
+  --t-menu: calc(40 * var(--multiplier));
 
   --s-margin-edge: calc(20 * var(--multiplier));
   --s-section-gap: calc(88 * var(--multiplier));
@@ -47,6 +50,7 @@
     --t-body: clamp(15px, calc(16 * var(--multiplier)), 18px);
     --t-small: clamp(13px, calc(14 * var(--multiplier)), 15px);
     --t-eyebrow: clamp(11px, calc(12 * var(--multiplier)), 13px);
+    --t-menu: calc(56 * var(--multiplier));
 
     --s-margin-edge: calc(40 * var(--multiplier));
     --s-section-gap: calc(140 * var(--multiplier));

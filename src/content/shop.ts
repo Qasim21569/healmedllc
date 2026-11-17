@@ -77,7 +77,9 @@ export const shop = {
         index: "Store 01",
         name: "eBay",
         title: "Shop on eBay",
-        body: { desktop: ["Refurbished equipment, parts and", "accessories, shipped across the US."] },
+        body: {
+          desktop: ["Refurbished equipment, parts and", "accessories, shipped across the US."],
+        },
         cta: "Open store",
         url: site.stores.ebay,
         tone: "brand",

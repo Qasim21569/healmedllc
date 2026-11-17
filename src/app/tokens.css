@@ -2,34 +2,34 @@
    Type and spacing are NOT here: they live in globals.css on the --multiplier system (BUILD-PLAYBOOK §3). */
 
 :root {
-  --violet-50: #EBECF8;
-  --violet-100: #DEDFF4;
-  --violet-200: #C8C9EB;
-  --violet-300: #ABA9DE;
-  --violet-400: #8D88CF;
-  --violet-500: #776DC3;
-  --violet-600: #6556B8;
+  --violet-50: #ebecf8;
+  --violet-100: #dedff4;
+  --violet-200: #c8c9eb;
+  --violet-300: #aba9de;
+  --violet-400: #8d88cf;
+  --violet-500: #776dc3;
+  --violet-600: #6556b8;
   --violet-700: #524696;
-  --violet-800: #3F3676;
-  --violet-900: #2E2757;
-  --violet-950: #1F1A3D;
-  --graphite-0: #FFFFFF;
-  --graphite-25: #FAFAFD;
-  --graphite-50: #F5F5F9;
-  --graphite-100: #EAEAF1;
-  --graphite-200: #DADAE2;
-  --graphite-300: #BDBDC6;
-  --graphite-400: #9797A1;
-  --graphite-500: #5F5E6B;
+  --violet-800: #3f3676;
+  --violet-900: #2e2757;
+  --violet-950: #1f1a3d;
+  --graphite-0: #ffffff;
+  --graphite-25: #fafafd;
+  --graphite-50: #f5f5f9;
+  --graphite-100: #eaeaf1;
+  --graphite-200: #dadae2;
+  --graphite-300: #bdbdc6;
+  --graphite-400: #9797a1;
+  --graphite-500: #5f5e6b;
   --graphite-600: #575761;
-  --graphite-700: #3F3F48;
+  --graphite-700: #3f3f48;
   --graphite-800: #282830;
-  --graphite-900: #18171E;
-  --graphite-950: #0D0D12;
-  --logo-white: #F4F6FC;
-  --ice-100: #DCE3F2;
-  --coral-500: #F6623D;
-  --coral-700: #AF2C1F;
+  --graphite-900: #18171e;
+  --graphite-950: #0d0d12;
+  --logo-white: #f4f6fc;
+  --ice-100: #dce3f2;
+  --coral-500: #f6623d;
+  --coral-700: #af2c1f;
   --radius-none: 0px;
   --radius-sm: 6px;
   --radius-md: 12px;
@@ -39,26 +39,27 @@
   --header-h: 76px;
 }
 
-:root, [data-theme="light"] {
+:root,
+[data-theme="light"] {
   --canvas: var(--logo-white);
-  --surface: #FFFFFF;
+  --surface: #ffffff;
   --surface-tint: var(--violet-100);
   --night: var(--violet-950);
   --ink: var(--violet-950);
   --body: var(--graphite-700);
   --muted: var(--graphite-500);
   --hairline: var(--graphite-200);
-  --control-border: #85858F;
+  --control-border: #85858f;
   --brand: var(--violet-600);
   --brand-hover: var(--violet-700);
   --brand-soft: var(--violet-100);
-  --on-brand: #FFFFFF;
+  --on-brand: #ffffff;
   --pulse: var(--violet-600);
   --danger: var(--coral-700);
   --focus: var(--violet-500);
   --photo-ice: var(--ice-100);
   --photo-lilac: var(--violet-100);
-  --shadow-float: 0 24px 48px -24px rgba(31,26,61,0.28);
+  --shadow-float: 0 24px 48px -24px rgba(31, 26, 61, 0.28);
   background-color: var(--canvas);
   color: var(--ink);
 }
@@ -69,10 +70,10 @@
   --surface-tint: var(--violet-800);
   --night: var(--violet-800);
   --ink: var(--logo-white);
-  --body: #C9C8DE;
-  --muted: #A6A4C4;
-  --hairline: #FFFFFF1F;
-  --control-border: #A6A4C4;
+  --body: #c9c8de;
+  --muted: #a6a4c4;
+  --hairline: #ffffff1f;
+  --control-border: #a6a4c4;
   --brand: var(--violet-300);
   --brand-hover: var(--violet-200);
   --brand-soft: var(--violet-900);
@@ -82,7 +83,7 @@
   --focus: var(--violet-300);
   --photo-ice: var(--ice-100);
   --photo-lilac: var(--violet-100);
-  --shadow-float: 0 24px 48px -24px rgba(0,0,0,0.6);
+  --shadow-float: 0 24px 48px -24px rgba(0, 0, 0, 0.6);
   background-color: var(--canvas);
   color: var(--ink);
 }
@@ -92,21 +93,21 @@
   --surface: var(--violet-700);
   --surface-tint: var(--violet-500);
   --night: var(--violet-950);
-  --ink: #FFFFFF;
+  --ink: #ffffff;
   --body: var(--logo-white);
   --muted: var(--violet-50);
-  --hairline: #FFFFFF33;
+  --hairline: #ffffff33;
   --control-border: var(--violet-50);
   --brand: var(--logo-white);
-  --brand-hover: #FFFFFF;
+  --brand-hover: #ffffff;
   --brand-soft: var(--violet-700);
   --on-brand: var(--violet-600);
-  --pulse: #FFFFFF;
-  --danger: #FFE1DA;
-  --focus: #FFFFFF;
+  --pulse: #ffffff;
+  --danger: #ffe1da;
+  --focus: #ffffff;
   --photo-ice: var(--ice-100);
   --photo-lilac: var(--violet-100);
-  --shadow-float: 0 24px 48px -24px rgba(31,26,61,0.45);
+  --shadow-float: 0 24px 48px -24px rgba(31, 26, 61, 0.45);
   background-color: var(--canvas);
   color: var(--ink);
 }

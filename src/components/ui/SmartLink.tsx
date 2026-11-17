@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 import { useScrollToHash } from "@/components/providers/SmoothScrollProvider";
+import { usePageTransition } from "@/components/providers/TransitionProvider";
 import { isExternalHref, isProtocolHref } from "@/lib/utils";
 
 type SmartLinkProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & {
@@ -16,13 +17,14 @@ type SmartLinkProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & {
 /**
  * One link for every kind of href:
  * - "#id" and "/same-page#id": scroll on the click through Lenis (repeatable).
- * - "/route": next/link.
+ * - "/route": next/link, with the page transition (T9) on a plain click.
  * - http(s): new tab, rel="noopener noreferrer".
  * - mailto:/tel: plain anchor.
  */
 export function SmartLink({ href, children, external, onClick, ...rest }: SmartLinkProps) {
   const pathname = usePathname();
   const scrollToHash = useScrollToHash();
+  const transition = usePageTransition();
 
   if (external || isExternalHref(href)) {
     return (
@@ -62,7 +64,16 @@ export function SmartLink({ href, children, external, onClick, ...rest }: SmartL
   }
 
   return (
-    <Link href={href} onClick={onClick} {...rest}>
+    <Link
+      href={href}
+      onClick={(e) => {
+        onClick?.(e);
+        if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        if (e.button !== 0) return;
+        if (transition?.navigate(href)) e.preventDefault();
+      }}
+      {...rest}
+    >
       {children}
     </Link>
   );

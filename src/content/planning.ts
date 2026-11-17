@@ -71,7 +71,9 @@ export const planning = {
         index: "02",
         pill: "Capital planning",
         eyebrow: "02 · Capital planning",
-        h2: { desktop: ["Prioritize spending using", "clinical need, budget", "and lifecycle data."] },
+        h2: {
+          desktop: ["Prioritize spending using", "clinical need, budget", "and lifecycle data."],
+        },
         lead: {
           desktop: [
             "A clear multi-year view of what needs",

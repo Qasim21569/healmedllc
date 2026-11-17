@@ -102,7 +102,10 @@ export const service = {
         index: "03",
         title: "Performance testing",
         body: {
-          desktop: ["Verification against manufacturer specs", "before equipment goes back into use."],
+          desktop: [
+            "Verification against manufacturer specs",
+            "before equipment goes back into use.",
+          ],
         },
       },
       {

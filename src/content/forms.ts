@@ -42,7 +42,10 @@ export const commonFields = {
 export const offerForm = {
   fields: {
     location: { label: "Facility location", placeholder: "City, state" },
-    items: { label: "What are you selling?", placeholder: "e.g. 6 ventilators, 2 ultrasound carts" },
+    items: {
+      label: "What are you selling?",
+      placeholder: "e.g. 6 ventilators, 2 ultrasound carts",
+    },
     timeline: {
       label: "Timeline",
       options: ["As soon as possible", "1 to 3 months", "Just exploring"],

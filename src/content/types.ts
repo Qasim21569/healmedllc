@@ -94,7 +94,7 @@ export type Tile = {
 export type PageHeroContent = {
   breadcrumb: { index: string; label: string };
   h1: Lines;
-  lead: Lines;
-  ctas: readonly Cta[];
+  lead?: Lines;
+  ctas?: readonly Cta[];
   photo?: PhotoId;
 };

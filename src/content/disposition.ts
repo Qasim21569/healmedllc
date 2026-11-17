@@ -112,7 +112,10 @@ export const disposition = {
     eyebrow: "Get an offer",
     h2: { desktop: ["Tell us what you have."] } satisfies Lines,
     lead: {
-      desktop: ["A list and a few photos is enough to start.", "We reply by email with next steps."],
+      desktop: [
+        "A list and a few photos is enough to start.",
+        "We reply by email with next steps.",
+      ],
       mobile: [
         "A list and a few photos is enough",
         "to start. We reply by email with",

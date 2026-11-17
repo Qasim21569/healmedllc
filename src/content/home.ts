@@ -86,7 +86,10 @@ export const home = {
     rows: [
       {
         index: "01",
-        title: { desktop: ["Equipment Planning"], mobile: ["Equipment", "Planning"] } satisfies Lines,
+        title: {
+          desktop: ["Equipment Planning"],
+          mobile: ["Equipment", "Planning"],
+        } satisfies Lines,
         chips: ["Consultation", "Capital planning", "Asset management"],
         href: "/equipment-planning",
         photo: "03" as PhotoId,

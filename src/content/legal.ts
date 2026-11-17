@@ -68,10 +68,7 @@ export const privacy: LegalPage = {
     {
       heading: "Your requests",
       body: {
-        desktop: [
-          "To see, correct or delete your details,",
-          "email info@healmedllc.com.",
-        ],
+        desktop: ["To see, correct or delete your details,", "email info@healmedllc.com."],
       },
     },
   ],
@@ -87,19 +84,13 @@ export const terms: LegalPage = {
     {
       heading: "About these terms",
       body: {
-        desktop: [
-          "These terms cover your use of this",
-          "website, operated by Heal Med LLC.",
-        ],
+        desktop: ["These terms cover your use of this", "website, operated by Heal Med LLC."],
       },
     },
     {
       heading: "Information on this site",
       body: {
-        desktop: [
-          "We keep the information here accurate,",
-          "but it is general and may change.",
-        ],
+        desktop: ["We keep the information here accurate,", "but it is general and may change."],
       },
     },
     {

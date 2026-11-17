@@ -1,16 +1,16 @@
 # HANDOFF: current state
 
 > Wins if any doc disagrees. Update at the end of every phase: what changed, what's next, what's blocked, what needs Qasim's eyes.
-> **Last updated:** 2026-11-18 (by Claude, end of P0)
+> **Last updated:** 2026-11-18 (by Claude, end of P1, checkpoint 1)
 
 ## State
 
-**P0 done.** Foundation, ports, all content and stub routes are in. Next: P1 Chrome (BUILD-PLAYBOOK §10).
+**P1 done, waiting at checkpoint 1 for Qasim's visual pass.** Header, mobile menu, footer, page transition, 404 and PageHero are on every route. Home is still a stub (h1 only) until P2. Next: P2 Home A.
 
 | Phase | Status | Commit | Notes |
 | --- | --- | --- | --- |
-| P0 Setup | ✅ done | see `git log --grep "feat(p0)"` | Next 16.4.6, React 19.3, Tailwind 4.3, motion 12.43, vitest 5 |
-| P1 Chrome | ⬜ | | |
+| P0 Setup | ✅ done | `5701fed` | Next 16.4.6, React 19.3, Tailwind 4.3, motion 12.43, vitest 5 |
+| P1 Chrome | ✅ done | see `git log --grep "feat(p1)"` | Header T6, MobileMenu, Footer T8, transition T9, 404, PageHero |
 | P2 Home A (I1, statement, I7) | ⬜ | | |
 | P3 Home B (I8, I5, T4, I2, marquee, shop) | ⬜ | | |
 | P4 Planning + Service | ⬜ | | |
@@ -20,7 +20,7 @@
 | P8 Polish | ⬜ | | |
 | P9 Launch prep | ⬜ | | |
 
-**Route count:** 12 after P0: `/`, `/equipment-planning`, `/asset-disposition`, `/service`, `/about`, `/shop`, `/contact`, `/privacy`, `/terms`, `/_not-found`, `/robots.txt`, `/sitemap.xml`. Expected after P7: 14 (+ `/opengraph-image`, + `/api/upload` in P5).
+**Route count:** 12 after P1 (unchanged from P0): `/`, `/equipment-planning`, `/asset-disposition`, `/service`, `/about`, `/shop`, `/contact`, `/privacy`, `/terms`, `/_not-found`, `/robots.txt`, `/sitemap.xml`. Expected after P7: 14 (+ `/opengraph-image`, + `/api/upload` in P5).
 
 **Repo:** `main` → https://github.com/Qasim21569/healmedllc (remote added, nothing pushed yet).
 
@@ -29,6 +29,7 @@
 - Copy: `src/content/*.ts` (typed; `null` = waiting on Ahmed). Line arrays are hand-set; `tests/content.test.ts` enforces ≤ 45 chars, no em dashes, no "!", no "HEAL Medical", photo ids exist.
 - Primitives: `src/components/ui/` (MaskText, SwapMaskText, Reveal, RevealImage, ParallaxContainer, ResponsiveImage, ClipImageContainer, HoverReveal, Marquee, ResponsiveMarquee, Accordion, StyledLink, Button, SmartLink, Eyebrow, Photo, Icon). `src/components/layout/Section.tsx`.
 - Hooks: `useMediaQuery` (server snapshot `false`), `useIsDesktop`, `useIsMobile`, `useReducedMotion`, `useMaskImage`.
+- Chrome: `src/components/layout/` (SiteChrome, Header, MobileMenu, Footer, Section), `src/components/providers/TransitionProvider.tsx`, `src/app/(site)/template.tsx`, `src/hooks/useHeaderTheme.ts`, `src/components/sections/PageHero.tsx`, `LegalBody.tsx`, `src/app/not-found.tsx`.
 - Tokens: `src/app/tokens.css` (copy of `design/tokens.css`), multiplier + `@theme` + `type-*` utilities in `src/app/globals.css`.
 
 ## Decisions made during the build
@@ -57,7 +58,29 @@
   - Service card spec lines, hours, social links, store URLs: `null`.
   - Store buttons and store links render nothing while the URLs are `null`.
 
+- **2026-11-18 · Tokens imported into `@layer base`.** `tokens.css` paints every `[data-theme]` element with `--canvas`. Unlayered, that beat Tailwind utilities, so `bg-tint`, `bg-surface` and `bg-transparent` (header at the top) silently lost. Layered, utilities win.
+- **2026-11-18 · Transition (T9) is Motion + React state,** not GSAP + zustand as in otis-valen. `SmartLink` intercepts plain clicks on internal route links: the panel rises (0.5s), the route is pushed, `(site)/template.tsx` calls `pageMounted()` on mount, and the panel leaves off the top (0.5s). A 2.5s safety timer reveals if a page never mounts. Same-page and hash links, back/forward and reduced motion skip it.
+- **2026-11-18 · Template lives in `src/app/(site)/template.tsx`,** not `src/app/template.tsx`. A root template is keyed by the route-group segment, which is the same for every page, so it would never remount.
+- **2026-11-18 · Logo on brand/dark:** the violet PNG is turned white with `brightness-0 invert` on brand and dark header themes. Swap for a white SVG when Ahmed sends vectors.
+- **2026-11-18 · 404 has the header but no footer:** the 404 is one brand section and the footer is brand, and two brand sections never sit together.
+- **2026-11-18 · Header scroll behaviour:** hides on scroll down past 240px, returns on scroll up; solid canvas + `--shadow-float` after 80px. Focus moving into the header shows it.
+- **2026-11-18 · Mobile menu link size** uses a new `--t-menu` var (40 at 375; 56 on the 1440 scale, so ~40px at 1023px).
+- **2026-11-18 · Prettier added** (printWidth 100, `npm run format`).
+
 ## Needs Qasim's eyes
+
+**P1 (checkpoint 1)**
+
+- **T6 header theme:** white on the brand hero, violet over light sections, flipping at the header's centre line. Inner pages only have hero + footer so far; the flip shows over the light strip under each hero band.
+- **Header scroll states:** transparent at the top, solid + shadow after 80px, hides after 240px scrolling down, returns on scroll up.
+- **Logo filtered to white** on brand: check the PNG stays crisp at 32/36px tall.
+- **Mobile menu (under 1024px):** 44px round button, full-screen brand panel, links ~40px with mono index and stagger, Esc closes, Tab stays inside, page doesn't scroll behind it.
+- **Footer:** CTA row, columns (stacked / 2x2 at 768 / 4 across at 1024), legal row, giant HEAL cropped by the bottom edge with the T8 rise. The crop is a `0.62em` frame, easy to tune.
+- **Page transition T9:** violet panel up 0.5s, page swap, panel off the top 0.5s, small "HEAL" in the middle. Try header links, footer links and the logo.
+- **PageHero:** breadcrumb, giant h1, lead left / buttons right, 21:9 band (4:3 on phones) straddling into the next section, I3 wipe on entry, I4 parallax from 1024px.
+- **Interim rhythm:** inner pages go brand hero → brand footer until their sections land (P4 to P6).
+
+**P0**
 
 - **Multiplier jump at 767 → 768px.** Per spec, mobile uses `100vw/375` and desktop `100vw/1440`, so `type-display` is ~94px at 767px and ~51px at 768px. The playbook's fallback is to cap the mobile multiplier with `min(calc(100vw / 375), 1.4px)`. Say the word and I'll apply it.
 - **Mobile line breaks** in `src/content/*` were set by estimate (Host Grotesk ~0.48em per character). Check headlines at 375 and 390.

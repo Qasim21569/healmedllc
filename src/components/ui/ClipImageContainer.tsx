@@ -22,11 +22,7 @@ export function ClipImageContainer({
   children: ReactNode;
 }) {
   const bottom = useTransform(scrollYProgress, [index * step, index * step + step], ["0%", "100%"]);
-  const scale = useTransform(
-    scrollYProgress,
-    [(index - 1) * step, index * step + step],
-    [1, 1.05],
-  );
+  const scale = useTransform(scrollYProgress, [(index - 1) * step, index * step + step], [1, 1.05]);
   const clipPath = useMotionTemplate`inset(0px 0px ${bottom} 0px)`;
 
   return (
