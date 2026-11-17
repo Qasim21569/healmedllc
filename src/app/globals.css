@@ -1,0 +1,244 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+/* ─── Fluid multiplier (D5) ─────────────────────────────────────────────
+   Every size is a proportion of viewport width, not a breakpoint step.
+   N in calc(N * var(--multiplier)) is the pixel value at the design width:
+   375 on mobile, 1440 from 768 up. Copied from brahma-web, values from
+   BUILD-PLAYBOOK §3.1. Body sizes are clamped to a readable range.      */
+:root {
+  --multiplier: calc(100vw / 375);
+  --header-h: 64px;
+
+  --t-mega: calc(120 * var(--multiplier));
+  --t-display: calc(46 * var(--multiplier));
+  --t-h1-home: calc(40 * var(--multiplier));
+  --t-row-title: calc(38 * var(--multiplier));
+  --t-statement: calc(30 * var(--multiplier));
+  --t-marquee: calc(56 * var(--multiplier));
+  --t-h2: calc(30 * var(--multiplier));
+  --t-h3: calc(22 * var(--multiplier));
+  --t-lead: clamp(17px, calc(18 * var(--multiplier)), 22px);
+  --t-body: clamp(15px, calc(16 * var(--multiplier)), 18px);
+  --t-small: clamp(13px, calc(14 * var(--multiplier)), 15px);
+  --t-eyebrow: clamp(11px, calc(12 * var(--multiplier)), 13px);
+
+  --s-margin-edge: calc(20 * var(--multiplier));
+  --s-section-gap: calc(88 * var(--multiplier));
+  --s-gutter: calc(16 * var(--multiplier));
+
+  /* Photo placeholder ink (sits on --photo-lilac in every theme). */
+  --photo-ink: var(--violet-800);
+}
+
+@media only screen and (min-width: 768px) {
+  :root {
+    --multiplier: calc(100vw / 1440);
+
+    --t-mega: calc(380 * var(--multiplier));
+    --t-display: calc(96 * var(--multiplier));
+    --t-h1-home: calc(76 * var(--multiplier));
+    --t-row-title: calc(80 * var(--multiplier));
+    --t-statement: calc(56 * var(--multiplier));
+    --t-marquee: calc(120 * var(--multiplier));
+    --t-h2: calc(44 * var(--multiplier));
+    --t-h3: calc(30 * var(--multiplier));
+    --t-lead: clamp(17px, calc(20 * var(--multiplier)), 22px);
+    --t-body: clamp(15px, calc(16 * var(--multiplier)), 18px);
+    --t-small: clamp(13px, calc(14 * var(--multiplier)), 15px);
+    --t-eyebrow: clamp(11px, calc(12 * var(--multiplier)), 13px);
+
+    --s-margin-edge: calc(40 * var(--multiplier));
+    --s-section-gap: calc(140 * var(--multiplier));
+    --s-gutter: calc(24 * var(--multiplier));
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  :root {
+    --header-h: 76px;
+  }
+}
+
+@theme inline {
+  --text-*: initial;
+
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-tint: var(--surface-tint);
+  --color-night: var(--night);
+  --color-ink: var(--ink);
+  --color-body: var(--body);
+  --color-muted: var(--muted);
+  --color-hairline: var(--hairline);
+  --color-control: var(--control-border);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-soft: var(--brand-soft);
+  --color-on-brand: var(--on-brand);
+  --color-pulse: var(--pulse);
+  --color-focus: var(--focus);
+  --color-danger: var(--danger);
+  --color-photo-ice: var(--photo-ice);
+  --color-photo-lilac: var(--photo-lilac);
+  --color-photo-ink: var(--photo-ink);
+
+  --spacing-margin-edge: var(--s-margin-edge);
+  --spacing-section-gap: var(--s-section-gap);
+  --spacing-gutter: var(--s-gutter);
+  --spacing-header: var(--header-h);
+
+  --font-sans: var(--font-host), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --radius-input: var(--radius-sm);
+  --radius-image: var(--radius-md);
+  --radius-card: var(--radius-lg);
+
+  --shadow-floating: var(--shadow-float);
+
+  --ease-heal: cubic-bezier(0.24, 0.43, 0.15, 0.97);
+}
+
+/* ─── Type utilities: one class carries the whole spec (PLAYBOOK §3.1) ─── */
+@utility type-mega {
+  font-size: var(--t-mega);
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  font-weight: 500;
+}
+@utility type-display {
+  font-size: var(--t-display);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  font-weight: 500;
+}
+@utility type-h1-home {
+  font-size: var(--t-h1-home);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  font-weight: 500;
+}
+@utility type-row {
+  font-size: var(--t-row-title);
+  line-height: 1;
+  letter-spacing: -0.045em;
+  font-weight: 500;
+}
+@utility type-statement {
+  font-size: var(--t-statement);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+}
+@utility type-marquee {
+  font-size: var(--t-marquee);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: 500;
+}
+@utility type-h2 {
+  font-size: var(--t-h2);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+}
+@utility type-h3 {
+  font-size: var(--t-h3);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  font-weight: 400;
+}
+@utility type-lead {
+  font-size: var(--t-lead);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+}
+@utility type-body {
+  font-size: var(--t-body);
+  line-height: 1.5;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+@utility type-small {
+  font-size: var(--t-small);
+  line-height: 1.45;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+@utility type-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--t-eyebrow);
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+/* ─── Base ─────────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: var(--t-body);
+    line-height: 1.5;
+    background-color: var(--canvas);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* No bold anywhere (D4). */
+  b,
+  strong,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  th {
+    font-weight: inherit;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--brand);
+    color: var(--on-brand);
+  }
+
+  /* Lenis (recommended base styles). */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis:not(.lenis-autoToggle).lenis-stopped {
+    overflow: clip;
+  }
+  .lenis [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,68 @@
+import type { PhotoEntry, PhotoId } from "./types";
+
+/**
+ * Every photo slot on the site (docs/PHOTO-PIPELINE.md §3).
+ * `src: null` renders the placeholder frame at the same ratio. To swap a real
+ * photo in: drop the file in /public/photos/ and set `src` (plus real width
+ * and height if the crop differs).
+ *
+ * Width/height set the ratio: 16:9 = 2880x1620, 4:5 = 1600x2000,
+ * 21:9 = 2400x1029, 4:3 = 1600x1200, 3:2 = 1600x1067, 1:1 = 1600x1600,
+ * cut-outs = 1200x1600 (taller than wide, transparent).
+ */
+
+const r169 = { width: 2880, height: 1620 };
+const r45 = { width: 1600, height: 2000 };
+const r219 = { width: 2400, height: 1029 };
+const r43 = { width: 1600, height: 1200 };
+const r32 = { width: 1600, height: 1067 };
+const r11 = { width: 1600, height: 1600 };
+const cut = { width: 1200, height: 1600 };
+
+export const photos: Record<PhotoId, PhotoEntry> = {
+  "01": { src: null, alt: "Close detail of hospital equipment under cool light", subject: "Equipment detail, high contrast", ...r169, backdrop: "none", cutout: false },
+  "03": { src: null, alt: "Biomedical technician working on a device at the bench", subject: "Technician at work", ...r45, backdrop: "none", cutout: false },
+  "04": { src: null, alt: "Refurbished ICU ventilator on a stand", subject: "Ventilator", ...cut, backdrop: "ice", cutout: true },
+  "05": { src: null, alt: "Cart-based ultrasound system", subject: "Ultrasound system", ...cut, backdrop: "lilac", cutout: true },
+  "06": { src: null, alt: "Bedside patient monitor", subject: "Patient monitor", ...cut, backdrop: "lilac", cutout: true },
+  "07": { src: null, alt: "Histology lab instrument", subject: "Histology / lab instrument", ...cut, backdrop: "ice", cutout: true },
+  "08": { src: null, alt: "Infusion pump", subject: "Infusion pump", ...cut, backdrop: "ice", cutout: true },
+  "09": { src: null, alt: "Group of replacement parts and batteries", subject: "Parts and batteries", ...cut, backdrop: "lilac", cutout: true },
+  "10": { src: null, alt: "Ahmed Kharodia testing equipment at the bench", subject: "Ahmed at the bench, wide", ...r169, backdrop: "none", cutout: false },
+  "11": { src: null, alt: "Coiled patient and power cables", subject: "Cables", ...cut, backdrop: "ice", cutout: true },
+  "12": { src: null, alt: "Tested replacement parts", subject: "Parts", ...cut, backdrop: "lilac", cutout: true },
+  "13": { src: null, alt: "Replacement equipment batteries", subject: "Batteries", ...cut, backdrop: "ice", cutout: true },
+  "14": { src: null, alt: "Engineer reviewing equipment on a hospital floor", subject: "Engineer reviewing equipment", ...r219, backdrop: "none", cutout: false },
+  "15": { src: null, alt: "Equipment walkthrough with clinical staff", subject: "Walkthrough with clinical staff", ...r45, backdrop: "none", cutout: false },
+  "16": { src: null, alt: "Planning session with a laptop and an equipment list", subject: "Planning session", ...r45, backdrop: "none", cutout: false },
+  "17": { src: null, alt: "Asset tag being scanned on a device", subject: "Asset tag being scanned", ...r45, backdrop: "none", cutout: false },
+  "18": { src: null, alt: "Medical equipment staged for collection", subject: "Equipment staged for collection", ...r219, backdrop: "none", cutout: false },
+  "19": { src: null, alt: "Ventilator and respiratory equipment", subject: "Ventilators and respiratory", ...cut, backdrop: "ice", cutout: true },
+  "20": { src: null, alt: "Ultrasound system with probes", subject: "Ultrasound systems and probes", ...cut, backdrop: "lilac", cutout: true },
+  "21": { src: null, alt: "Patient monitoring equipment", subject: "Patient monitoring", ...cut, backdrop: "ice", cutout: true },
+  "22": { src: null, alt: "Histology and lab instrument", subject: "Histology and lab", ...cut, backdrop: "lilac", cutout: true },
+  "23": { src: null, alt: "Infusion pump", subject: "Infusion pumps", ...cut, backdrop: "lilac", cutout: true },
+  "24": { src: null, alt: "Imaging equipment", subject: "Imaging", ...cut, backdrop: "ice", cutout: true },
+  "25": { src: null, alt: "Surgical and operating room equipment", subject: "Surgical and OR", ...cut, backdrop: "lilac", cutout: true },
+  "26": { src: null, alt: "Parts, batteries and accessories", subject: "Parts, batteries, accessories", ...cut, backdrop: "ice", cutout: true },
+  "27": { src: null, alt: "Device label and serial plate", subject: "Device label and serial plate", ...r43, backdrop: "none", cutout: false },
+  "28": { src: null, alt: "Hands repairing a ventilator", subject: "Hands repairing a ventilator", ...r219, backdrop: "none", cutout: false },
+  "29": { src: null, alt: "Ventilator", subject: "Ventilator", ...cut, backdrop: "ice", cutout: true },
+  "30": { src: null, alt: "Ultrasound system", subject: "Ultrasound", ...cut, backdrop: "lilac", cutout: true },
+  "31": { src: null, alt: "Histology instrument", subject: "Histology", ...cut, backdrop: "ice", cutout: true },
+  "32": { src: null, alt: "HEAL workshop with staged equipment", subject: "Workshop or warehouse, wide", ...r219, backdrop: "none", cutout: false },
+  "33": { src: null, alt: "Portrait of Ahmed Kharodia", subject: "Ahmed portrait", ...r45, backdrop: "none", cutout: false },
+  "34": { src: null, alt: "Portrait of a HEAL team member", subject: "Second team member", ...r45, backdrop: "none", cutout: false },
+  "35": { src: null, alt: "Shelf of tested parts and batteries", subject: "Shelf of parts and batteries", ...r219, backdrop: "none", cutout: false },
+  "36": { src: null, alt: "Coiled patient and power cables", subject: "Cables", ...cut, backdrop: "ice", cutout: true },
+  "37": { src: null, alt: "Tested replacement parts", subject: "Parts", ...cut, backdrop: "lilac", cutout: true },
+  "38": { src: null, alt: "Replacement equipment batteries", subject: "Batteries", ...cut, backdrop: "ice", cutout: true },
+  "39": { src: null, alt: "Bench with tools and an open device", subject: "Bench detail", ...r45, backdrop: "none", cutout: false },
+  "40": { src: null, alt: "Equipment loaded for pickup", subject: "Equipment loaded for pickup", ...r32, backdrop: "none", cutout: false },
+  "41": { src: null, alt: "Probe connector under test", subject: "Probe or connector under test", ...r11, backdrop: "none", cutout: false },
+  map: { src: null, alt: "Map showing 8315 Grandstaff Dr, Sacramento", subject: "Static map, 8315 Grandstaff Dr", ...r43, backdrop: "lilac", cutout: false },
+};
+
+export function getPhoto(id: PhotoId): PhotoEntry {
+  return photos[id];
+}
