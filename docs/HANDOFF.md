@@ -16,7 +16,7 @@
 | P4 Planning + Service | ✅ done | see `git log --grep "feat(p4)"` | I6 sticky swap + stacked fallback, How it works, What we service (I5 + scan), How we help. Service request form landed in P5 with the forms infra |
 | P5 Disposition + forms | ✅ done | see `git log --grep "feat(p5)"` | Disposition page, 4 zod schemas, Server Actions, Turnstile, Resend + dev fallback, Blob client uploads, HealForm, Service request + Offer wired, FAQ answers written |
 | P6 About, Shop, Contact | ✅ done | see `git log --grep "feat(p6)"` | About (I4 collage, The name T8, null-safe team), Shop (I5 categories, store cards hidden until URLs exist, inline stock check), Contact (intent chips, details card, map tile); all 4 forms wired |
-| P7 SEO + legal | ⬜ | | |
+| P7 SEO + legal | ✅ done | see `git log --grep "feat(p7)"` | Metadata + OG/Twitter per route, opengraph-image, icons, LocalBusiness + FAQPage JSON-LD, sitemap, robots, legal holding pages, redirects scaffold |
 | P8 Polish | ⬜ | | |
 | P9 Launch prep | ⬜ | | |
 

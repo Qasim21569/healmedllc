@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { MaskText } from "@/components/ui/MaskText";
 import { PulseSteps } from "@/components/ui/PulseSteps";
+import { faqPage, jsonLdScript } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
 import { present } from "@/lib/utils";
 
@@ -27,6 +28,10 @@ export default function Page() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(faqPage(faqItems)) }}
+      />
       <PageHero content={disposition.hero} />
 
       <Section theme="light" id={whatWeBuy.id} labelledBy="buy-title">

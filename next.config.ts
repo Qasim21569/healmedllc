@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { legacyRedirects } from "./redirects";
 
 /*
  * Cache Components is deliberately OFF (HANDOFF, decisions, 2026-11-18).
@@ -9,6 +10,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Pin the workspace root: a stray lockfile in the home folder confuses detection.
   turbopack: { root: process.cwd() },
+  async redirects() {
+    return legacyRedirects;
+  },
   images: {
     qualities: [75],
     formats: ["image/avif", "image/webp"],

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Host_Grotesk } from "next/font/google";
 import "./globals.css";
+import { jsonLdScript, localBusiness } from "@/lib/jsonld";
 import { rootMetadata } from "@/lib/seo";
 
 /* D4: Host Grotesk 400/500 for everything, Geist Mono 400 for eyebrows and
@@ -35,6 +36,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <noscript>
           <style>{`[data-reveal]{opacity:1!important;transform:none!important;clip-path:none!important}`}</style>
         </noscript>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLdScript(localBusiness()) }}
+        />
         {children}
       </body>
     </html>
