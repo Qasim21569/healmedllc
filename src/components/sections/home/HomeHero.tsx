@@ -1,5 +1,6 @@
 "use client";
 
+import { mapRange } from "@/lib/motion";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useMotionValueEvent, useScroll, useTransform } from "motion/react";
 import { home } from "@/content/home";
@@ -127,7 +128,7 @@ function HeroStatic() {
     >
       <HeroEyebrows />
       <div
-        className="relative mt-[calc(var(--s-section-gap)*0.35)] w-full overflow-hidden"
+        className="relative mt-[calc(var(--s-section-gap)*0.35)] w-full overflow-hidden bg-night"
         style={{ aspectRatio: `${vb.width} / ${vb.height}` }}
       >
         {/* Tablet: I4 amount 8 inside the letters. */}
@@ -225,17 +226,17 @@ function HeroDesktop() {
   }, [layout, endScale, origin]);
 
   // Progress map (PLAYBOOK §5).
-  const photoScale = useTransform(scrollYProgress, [0, 0.85], [1.15, 1]);
-  const textOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
-  const textY = useTransform(scrollYProgress, [0, 0.15], [0, -40]);
+  const photoScale = useTransform(scrollYProgress, (p) => mapRange(p, [0, 0.85], [1.15, 1]));
+  const textOpacity = useTransform(scrollYProgress, (p) => mapRange(p, [0, 0.15], [1, 0]));
+  const textY = useTransform(scrollYProgress, (p) => mapRange(p, [0, 0.15], [0, -40]));
   const overlayScale = useTransform(scrollYProgress, (p) => {
     const t = Math.min(1, Math.max(0, (p - 0.05) / 0.8));
     // Exponential, so the zoom reads as constant speed.
     return Math.pow(endScale.get(), t);
   });
-  const overlayOpacity = useTransform(scrollYProgress, [0.85, 1], [1, 0]);
-  const captionOpacity = useTransform(scrollYProgress, [0.85, 0.97], [0, 1]);
-  const captionY = useTransform(scrollYProgress, [0.85, 0.97], [16, 0]);
+  const overlayOpacity = useTransform(scrollYProgress, (p) => mapRange(p, [0.85, 1], [1, 0]));
+  const captionOpacity = useTransform(scrollYProgress, (p) => mapRange(p, [0.85, 0.97], [0, 1]));
+  const captionY = useTransform(scrollYProgress, (p) => mapRange(p, [0.85, 0.97], [16, 0]));
 
   // Light text on the photo once it fills the screen.
   useMotionValueEvent(scrollYProgress, "change", (p) => {
@@ -249,7 +250,8 @@ function HeroDesktop() {
     <Section ref={sectionRef} theme="brand" flush labelledBy="home-title" className="h-[240vh]">
       <div ref={stageRef} className="sticky top-0 h-svh overflow-hidden">
         {/* Layer 0: photo */}
-        <motion.div className="absolute inset-0" style={{ scale: photoScale }}>
+        {/* Dark ground: the letters read as shapes before the photo loads. */}
+        <motion.div className="absolute inset-0 bg-night" style={{ scale: photoScale }}>
           <Photo id={hero.photo} fill preload sizes={PHOTO_SIZES} />
         </motion.div>
 

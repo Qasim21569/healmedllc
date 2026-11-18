@@ -1,5 +1,6 @@
 "use client";
 
+import { mapRange } from "@/lib/motion";
 import { useRef, useState } from "react";
 import {
   AnimatePresence,
@@ -83,10 +84,15 @@ function Shutter() {
   const [revealed, setRevealed] = useState(false);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
-  const topY = useTransform(scrollYProgress, [0, 0.3], ["0vh", "-38vh"]);
-  const bottomY = useTransform(scrollYProgress, [0, 0.3], ["0vh", "38vh"]);
-  const windowHeight = useTransform(scrollYProgress, [0.1, 0.6], ["0svh", "100svh"]);
-  const photoScale = useTransform(scrollYProgress, [0.1, 0.6], [1.2, 1]);
+  const topY = useTransform(scrollYProgress, (p) => `${mapRange(p, [0, 0.3], [0, -38])}vh`);
+  const bottomY = useTransform(scrollYProgress, (p) => `${mapRange(p, [0, 0.3], [0, 38])}vh`);
+  const windowHeight = useTransform(
+    scrollYProgress,
+    (p) => `${mapRange(p, [0.1, 0.6], [0, 100])}svh`,
+  );
+  const photoScale = useTransform(scrollYProgress, (p) => mapRange(p, [0.1, 0.6], [1.2, 1]));
+  // The lines clear as the copy arrives, so it reads over the open photo.
+  const linesOpacity = useTransform(scrollYProgress, (p) => mapRange(p, [0.55, 0.65], [1, 0]));
 
   useMotionValueEvent(scrollYProgress, "change", (p) => setRevealed(p >= 0.6));
 
@@ -108,9 +114,10 @@ function Shutter() {
         </div>
 
         {/* The two lines part. */}
-        <div
+        <motion.div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-margin-edge text-center"
+          style={{ opacity: linesOpacity }}
         >
           <motion.span className="type-display block text-ink" style={{ y: topY }}>
             {topLine}
@@ -118,7 +125,7 @@ function Shutter() {
           <motion.span className="type-display block text-ink" style={{ y: bottomY }}>
             {bottomLine}
           </motion.span>
-        </div>
+        </motion.div>
 
         <div className="absolute top-[calc(var(--header-h)+var(--s-section-gap)*0.25)] left-margin-edge">
           <Eyebrow>{whoWeAre.eyebrow}</Eyebrow>

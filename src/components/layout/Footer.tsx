@@ -93,7 +93,7 @@ export function Footer() {
 
       {/* Cropped by the bottom edge: the frame is shorter than the letters. */}
       <div className="h-[0.62em] type-mega overflow-hidden text-ink select-none">
-        <Wordmark word={footer.wordmark} className="justify-between" />
+        <Wordmark word={footer.wordmark} />
       </div>
     </Section>
   );

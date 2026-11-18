@@ -20,7 +20,8 @@ function themeOf(el: Element): Theme {
  * (I1 flips it to `dark` once the photo fills the screen); attribute changes
  * on the current section are picked up by a MutationObserver.
  *
- * Re-subscribes on route change (`key`) and on resize.
+ * Re-subscribes on route change (`key`), on resize, and when sections are
+ * swapped in the DOM (desktop signatures replace their static markup).
  */
 export function useHeaderTheme(
   headerRef: RefObject<HTMLElement | null>,
@@ -33,6 +34,7 @@ export function useHeaderTheme(
     let io: IntersectionObserver | null = null;
     let mo: MutationObserver | null = null;
     let current: Element | null = null;
+    let watched: Element[] = [];
 
     const setup = () => {
       io?.disconnect();
@@ -57,7 +59,8 @@ export function useHeaderTheme(
         { rootMargin: `-${centre}px 0px -${bottom}px 0px`, threshold: 0 },
       );
 
-      document.querySelectorAll(SELECTOR).forEach((el) => {
+      watched = Array.from(document.querySelectorAll(SELECTOR));
+      watched.forEach((el) => {
         io?.observe(el);
         mo?.observe(el, { attributes: true, attributeFilter: ["data-header-theme"] });
       });
@@ -71,8 +74,20 @@ export function useHeaderTheme(
     };
     window.addEventListener("resize", onResize);
 
+    // Signature sections (I1, I2, I6) swap their static markup for the
+    // animated version after hydration, so the observed elements change.
+    // Re-attach whenever the set of sections differs from what is watched.
+    const dom = new MutationObserver(() => {
+      const now = Array.from(document.querySelectorAll(SELECTOR));
+      if (now.length === watched.length && now.every((el, i) => el === watched[i])) return;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(setup);
+    });
+    dom.observe(document.body, { childList: true, subtree: true });
+
     return () => {
       cancelAnimationFrame(raf);
+      dom.disconnect();
       window.removeEventListener("resize", onResize);
       io?.disconnect();
       mo?.disconnect();

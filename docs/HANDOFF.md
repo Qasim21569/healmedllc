@@ -1,7 +1,7 @@
 # HANDOFF: current state
 
 > Wins if any doc disagrees. Update at the end of every phase: what changed, what's next, what's blocked, what needs Qasim's eyes.
-> **Last updated:** 2026-11-18 (by Claude, end of P9)
+> **Last updated:** 2026-11-18 (by Claude, after the runtime check, stock photos and label redesign)
 
 ## State
 
@@ -25,6 +25,22 @@
 **Verification at P9:** `npx tsc --noEmit` clean · `npx eslint src` clean · `npx next build` green, 16 routes · `npx vitest run` 31 tests green (content rules, photo ids, pending values, schemas, submit pipeline, Turnstile, email, SEO, JSON-LD) · SSR greps: every page's headings, forms and anchors are in its `.html`; `<title>`, `application/ld+json` and `legalName":"Heal Med LLC"` on every route; `og:image` on every route.
 
 **Repo:** `main` → https://github.com/Qasim21569/healmedllc. P0 and P1 are pushed; P2 to P9 are local until Qasim says push.
+
+## Runtime check (2026-11-18, after P9)
+
+Qasim can't run the site, so Claude ran the production build (`next start`) and checked it over HTTP and in the built-in browser.
+
+- **HTTP:** all 9 pages 200, unknown URL 404, sitemap, robots, share image, icons, logos, image optimizer OK. `/api/upload` answers 503 "Uploads are not configured" without a Blob token, as designed.
+- **Forms:** empty submit shows every field error with the CONTENT.md copy.
+- **Bugs found and fixed:**
+  1. **Every `fill` photo collapsed to ~0px** (`Photo` had both `relative` and `absolute`; `relative` won). This blanked the I1 hero photo, hero bands, collage and I6 frame.
+  2. **motion 12 hands array-form `useTransform` opacity to a native ViewTimeline and drops the input range**, so the I1 text faded over the whole section instead of the first 15%. All scroll-linked transforms now use function form with `mapRange()` (`src/lib/motion.ts`).
+  3. **Header theme went stale on desktop:** I1, I2 and I6 swap their static markup after hydration, and the header was still watching the old elements (so it never turned light-on-photo at the end of I1 or over I2). `useHeaderTheme` now re-attaches when the set of sections changes.
+  4. **T4 pulse line:** dot and drawn line disagreed (`vector-effect: non-scaling-stroke` makes the browser measure pathLength dashes in screen pixels). Removed.
+  5. **JSON-LD escaping** was a no-op (caught by a test in P7, fixed then).
+  6. Share image letters overlapped (satori applies tight tracking harder); loosened to -0.02em.
+- **Polish from the check:** I2 lines fade out (0.55 to 0.65) so the copy reads over the open photo; the footer HEAL sits as one word instead of being spread across the width; the I1 photo layer has a dark ground so the letters read before the photo loads.
+- **Verified after fixes:** I1 progress map (text gone by 15%, exponential zoom, caption at 0.85+, header dark at the end), header theme over every Home section, I6 pill/text/photo swaps, Disposition offer form validation, no console errors.
 
 ## Where things are
 
@@ -65,6 +81,14 @@
 - **2026-11-18 · 404 has the header but no footer** (no two brand sections together).
 - **2026-11-18 · Optional intro (T12)** mounts client-side only, so a JS failure can never leave the page covered. Off (`site.intro.enabled: false`).
 
+**Photography and labels (Qasim, 2026-11-18)**
+
+- **Stand-in stock photography everywhere** (Qasim asked for proper images). 34 slots from Unsplash under the Unsplash License (free for commercial use, no attribution needed; no Unsplash+), cropped to each slot's ratio and compressed to WebP, all under budget; record in `docs/PHOTO-CREDITS.md`, script `scripts/fetch-stock-photos.mjs`. Not Google Images: most results there are copyrighted. Equipment shots are real photographs, not AI-generated (D10). Patients and identifiable data screens avoided.
+- **I5 tiles show photographs edge to edge** in the panel (zoom 1.04 on hover) while there are no transparent cut-outs; tile entries are `cutout: false`. When real cut-outs arrive, set `cutout: true` and the breakout returns.
+- **Ahmed's portrait** (supplied by Qasim) is photo 33 on About, cropped 4:5 from the top.
+- **Contact map** is a violet-tinted static image built from OpenStreetMap tiles (`scripts/build-map.mjs`, ODbL credit printed on the image), centred on the Nominatim result for the address.
+- **Section labels redesigned (changes D4 for eyebrows).** The Geist Mono uppercase eyebrow is replaced by a short `--brand` rule plus the label in Host Grotesk 500, sentence case (`type-label`, 14 at 375 / 15 on the 1440 scale, clamped 13 to 16px). " · " in a label renders as small brand dots ("Planning · Disposition · Service"). Breadcrumbs, contact field labels, store index and role use `type-label` too. Geist Mono stays for numeric indexes, spec lines and file hints. One component: `src/components/ui/Eyebrow.tsx`.
+
 **Logo**
 
 - **2026-11-18 · Real logo in use (Qasim's instruction).** `public/brand/heal-logo-violet.png` is the supplied artwork: a white mark on a solid violet rectangle (not a violet logo). `scripts/build-logo.mjs` extracts the mark into transparent `heal-logo-white.png` (brand/dark) and `heal-logo-violet-mark.png` (light), which the header crossfades with the theme, and crops the H circle into `icon.png` / `apple-icon.png`. The artwork reads "HEAL MEDICAL LLC"; site text still follows the legal name (open question for Ahmed). The source is 360px wide, so the icons are soft: swap for an SVG when there is one.
@@ -96,6 +120,11 @@
 
 Everything from P2 on is unreviewed. Grouped by page; widths to check: 375, 390, 768, 1024, 1280, 1440, 1920.
 
+**New since the check**
+- **Section labels** (rule + sentence case + dots): size and weight next to the h2s; whether the rule should be longer or the label muted instead of ink.
+- **Stock photo crops** at each slot (crops use sharp's "attention" focus). The "Who we are" shutter uses a stock photo of an engineer at a bench (black and white); it could be read as Ahmed, so swap in the real bench shot (photo 10) when it exists.
+- **Tiles as photographs:** check panels with full-bleed photos look right in the drift columns and on Disposition, Service and Shop.
+
 **Global**
 - **Multiplier jump at 767 → 768px:** `type-display` is ~94px at 767px and ~51px at 768px (spec). Fallback: cap the mobile multiplier with `min(calc(100vw / 375), 1.4px)`.
 - **Mobile line breaks** were set by estimate (~0.48em per character). Check every headline at 375.
@@ -124,7 +153,7 @@ See `OPEN-QUESTIONS.md`. Nothing blocks the build: placeholders are `null` and r
 
 ## Known defects
 
-_None known. Visual review pending._
+_None known._ Note for testing in the built-in browser: when the pane is hidden the page runs as a background tab, so scroll reveals and lazy images look stuck. Bring the pane forward before judging motion.
 
 ## Bundle (P8)
 

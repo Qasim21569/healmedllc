@@ -44,7 +44,7 @@ export function PageHero({
       className={cn("pt-[calc(var(--header-h)+var(--s-section-gap)*0.55)]", photo && "pb-0")}
     >
       <nav aria-label="Breadcrumb" className="mb-[calc(var(--s-section-gap)*0.3)]">
-        <ol className="type-eyebrow flex flex-wrap items-center gap-2 text-muted">
+        <ol className="type-label flex flex-wrap items-center gap-2.5 text-muted">
           <li>
             <SmartLink href="/" className="underline-offset-4 hover:text-ink hover:underline">
               Home

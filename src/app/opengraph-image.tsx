@@ -32,7 +32,7 @@ export default async function OpengraphImage() {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={logoSrc} width={286 * 0.8} height={109 * 0.8} alt="" />
       <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-        <div style={{ fontSize: 200, lineHeight: 0.8, letterSpacing: "-0.06em" }}>{site.brand}</div>
+        <div style={{ fontSize: 200, lineHeight: 0.8, letterSpacing: "-0.02em" }}>{site.brand}</div>
         <div style={{ fontSize: 44, letterSpacing: "-0.02em", color: "#EBECF8" }}>
           {site.brandLine}
         </div>

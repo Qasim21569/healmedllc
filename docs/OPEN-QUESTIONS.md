@@ -20,6 +20,9 @@ The build does not block on these: each has a `null` field in `src/content/` tha
 
 - [ ] **FAQ answers** on Asset Disposition were written for the site (equipment that doesn't work, single items vs lots, patient data, where we operate, what to send). Are they accurate?
 
+- [ ] **ZIP code:** the site says 8315 Grandstaff Dr, Sacramento, CA **95818**, but OpenStreetMap places that address in **95823**. Which is right? (Footer, contact card, JSON-LD.)
+- [ ] **Real photos still wanted:** the site now uses licensed Unsplash stand-ins (docs/PHOTO-CREDITS.md). Priority swaps: 10 (Ahmed at the bench, used in "Who we are"), 01 (hero), cut-outs for the equipment tiles.
+
 ## Nice to have
 
 - [ ] CMMS partner name, and whether it can be named publicly (logo for the partner card)

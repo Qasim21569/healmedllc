@@ -113,20 +113,13 @@ function Line({
         preserveAspectRatio="none"
         className="absolute inset-0 size-full overflow-visible"
       >
-        <path
-          d={path}
-          fill="none"
-          className="stroke-hairline"
-          strokeWidth={1.5}
-          vectorEffect="non-scaling-stroke"
-        />
+        <path d={path} fill="none" className="stroke-hairline" strokeWidth={1.5} />
         <motion.path
           ref={pathRef}
           d={path}
           fill="none"
           className="stroke-pulse"
           strokeWidth={1.5}
-          vectorEffect="non-scaling-stroke"
           style={{ pathLength: length }}
         />
       </svg>

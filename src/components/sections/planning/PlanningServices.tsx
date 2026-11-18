@@ -13,7 +13,7 @@ import { planning, type PlanningService } from "@/content/planning";
 import { useScrollToHash } from "@/components/providers/SmoothScrollProvider";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
 import useMaskImage from "@/hooks/useMaskImage";
-import { EASE } from "@/lib/motion";
+import { EASE, mapRange } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { Section } from "@/components/layout/Section";
 import { Eyebrow } from "@/components/ui/Eyebrow";
@@ -157,11 +157,13 @@ function Sticky() {
           </div>
 
           <div role="tabpanel" aria-live="polite" className="flex flex-col gap-6">
-            <SwapMaskText
-              state={active}
-              lines={[item.eyebrow]}
-              className="type-eyebrow text-muted"
-            />
+            <div className="type-label flex items-center gap-3 text-ink">
+              <span
+                aria-hidden="true"
+                className="h-px w-[calc(28*var(--multiplier))] min-w-5 shrink-0 bg-brand"
+              />
+              <SwapMaskText state={active} lines={[item.eyebrow]} />
+            </div>
             <h2 className="type-h2 text-ink">
               <SwapMaskText state={active} lines={item.h2.desktop} />
             </h2>
@@ -207,9 +209,13 @@ function PhotoLayer({
   children: React.ReactNode;
 }) {
   const boundary = (index + 1) / N;
-  const local = useTransform(progress, [boundary - 0.12, boundary + 0.04], [0, 1]);
+  const local = useTransform(progress, (p) =>
+    mapRange(p, [boundary - 0.12, boundary + 0.04], [0, 1]),
+  );
   const maskImage = useMaskImage(local, false);
-  const scale = useTransform(progress, [boundary - 1 / N, boundary + 0.04], [1.075, 1]);
+  const scale = useTransform(progress, (p) =>
+    mapRange(p, [boundary - 1 / N, boundary + 0.04], [1.075, 1]),
+  );
   const last = index === N - 1;
 
   return (

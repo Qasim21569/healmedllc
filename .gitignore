@@ -44,3 +44,6 @@ next-env.d.ts
 
 # opentype source font for scripts/build-heal-letters.mjs (downloaded, not shipped)
 /scripts/fonts/
+
+# scratch (contact sheets, downloads)
+/.tmp/

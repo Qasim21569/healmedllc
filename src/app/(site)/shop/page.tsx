@@ -60,7 +60,7 @@ export default function Page() {
                     "transition-[translate,box-shadow] duration-500 ease-heal [@media(pointer:fine)]:hover:-translate-y-1.5 [@media(pointer:fine)]:hover:shadow-floating",
                   )}
                 >
-                  <span className="type-eyebrow text-muted">{store.index}</span>
+                  <span className="type-label text-muted">{store.index}</span>
                   <span className="flex flex-col gap-4">
                     <span className="type-display">{store.name}</span>
                     <span className="type-body max-w-[36ch] text-body">

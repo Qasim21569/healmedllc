@@ -23,7 +23,9 @@ const panels = {
  *
  * Entry: panel I3, device Reveal 0.1s later. Hover (fine pointers): device
  * lifts 8px, panel scales to 0.98, arrow nudges. Missing cut-out: the photo
- * placeholder sits inside the panel, no breakout.
+ * placeholder sits inside the panel, no breakout. A photograph (stock or
+ * shot, not a cut-out) fills the panel edge to edge and zooms 1.04 on hover
+ * (T10 tile hover).
  *
  * `children` renders under the title (service card copy and spec line).
  * `scan` adds the T10 scan line (service cards).
@@ -53,11 +55,14 @@ export function BreakoutTile({
 }) {
   const entry = photos[photo];
   const hasCutout = Boolean(entry.src) && entry.cutout;
+  const isPhotograph = Boolean(entry.src) && !entry.cutout;
+  // Breakout height: cut-outs rise out of the panel; photographs sit inside it.
+  const top = hasCutout ? "mt-[18%]" : "";
 
   const body = (
     <>
       {/* Room for the device rising out of the panel. */}
-      <div className="relative mt-[18%] aspect-[4/5]">
+      <div className={cn("relative aspect-[4/5]", top)}>
         <RevealImage
           delay={delay}
           className="absolute inset-0 rounded-card [contain:paint] [@media(pointer:fine)]:group-hover/tile:scale-[0.98]"
@@ -67,10 +72,18 @@ export function BreakoutTile({
             {scan && (
               <span
                 aria-hidden="true"
-                className="tile-scan pointer-events-none absolute inset-x-0 -top-1/3 h-1/3 bg-linear-to-b from-transparent via-white/45 to-transparent"
+                className="tile-scan pointer-events-none absolute z-10 inset-x-0 -top-1/3 h-1/3 bg-linear-to-b from-transparent via-white/45 to-transparent"
               />
             )}
-            {!hasCutout && (
+            {isPhotograph && (
+              <Photo
+                id={photo}
+                fill
+                sizes={sizes}
+                imageClassName="transition-transform duration-700 ease-heal [@media(pointer:fine)]:group-hover/tile:scale-[1.04]"
+              />
+            )}
+            {!entry.src && (
               <div className="absolute inset-[8%]">
                 <Photo id={photo} fill sizes={sizes} className="rounded-image" />
               </div>

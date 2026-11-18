@@ -33,7 +33,7 @@ export default function Page() {
                       key={row.label}
                       className="flex flex-col gap-1 border-t border-hairline py-4"
                     >
-                      <dt className="type-eyebrow text-muted">{row.label}</dt>
+                      <dt className="type-label text-muted">{row.label}</dt>
                       <dd className="type-body">
                         {row.href ? (
                           <a href={row.href} className="underline-offset-4 hover:underline">

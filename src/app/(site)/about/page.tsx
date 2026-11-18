@@ -103,7 +103,7 @@ export default function Page() {
                 </RevealImage>
                 <Reveal className="flex flex-col gap-1">
                   <h3 className="type-h3 text-ink">{person.name}</h3>
-                  {person.role && <p className="type-eyebrow text-muted">{person.role}</p>}
+                  {person.role && <p className="type-label text-muted">{person.role}</p>}
                 </Reveal>
                 {person.bio && (
                   <MaskText as="p" className="type-body text-body" lines={person.bio} />

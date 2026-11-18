@@ -1,5 +1,6 @@
 "use client";
 
+import { mapRange } from "@/lib/motion";
 import { useRef } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
 import type { Lines } from "@/content/types";
@@ -69,6 +70,6 @@ function Word({
   range: [number, number];
   reduced: boolean;
 }) {
-  const opacity = useTransform(progress, range, [0.18, 1]);
+  const opacity = useTransform(progress, (p) => mapRange(p, range, [0.18, 1]));
   return <motion.span style={{ opacity: reduced ? 1 : opacity }}>{children}</motion.span>;
 }

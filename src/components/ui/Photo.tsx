@@ -56,8 +56,10 @@ export function Photo({
   return (
     <div
       className={cn(
-        "relative overflow-hidden",
-        fill ? "absolute inset-0" : "w-full",
+        // Never both `relative` and `absolute`: whichever Tailwind emits last
+        // wins, and a relative fill frame collapses to zero height.
+        "overflow-hidden",
+        fill ? "absolute inset-0" : "relative w-full",
         !entry.src && "bg-photo-lilac text-photo-ink",
         entry.src && backdrops[entry.cutout ? "none" : entry.backdrop],
         className,
