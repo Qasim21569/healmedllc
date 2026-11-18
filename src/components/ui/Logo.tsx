@@ -8,8 +8,10 @@ import { logoPaths } from "./logo-paths";
  *
  * - `variant="full"`: mark + HEAL + MEDICAL LLC.
  * - `variant="mark"`: the H circle only (page transition, icons).
- * - `animated`: adds the class hooks the preloader's CSS animates
- *   (`.logo-mark`, `.logo-letter` with `--i`, `.logo-sub`).
+ * - `animated`: adds the hooks the preloader's CSS animates: `.logo-mark`
+ *   (with pathLength 1, so its outline can be drawn), `.logo-letter` with
+ *   `--i` inside a clip so the letters rise from behind a mask, `.logo-sub`.
+ *   Use it once per page (the clip has a fixed id).
  *
  * Decorative by default; pass `title` to make it an image with a name.
  */
@@ -37,10 +39,22 @@ export function Logo({
       aria-hidden={title ? undefined : true}
       focusable="false"
     >
-      <path d={mark} className={animated ? "logo-mark" : undefined} />
+      {animated && (
+        <defs>
+          {/* Mask for the HEAL letters (bounds 205,230.6 → 400.4,270.4). */}
+          <clipPath id="logo-word-clip">
+            <rect x="200" y="226" width="206" height="48" />
+          </clipPath>
+        </defs>
+      )}
+      <path
+        d={mark}
+        className={animated ? "logo-mark" : undefined}
+        pathLength={animated ? 1 : undefined}
+      />
       {variant === "full" && (
         <>
-          <g>
+          <g clipPath={animated ? "url(#logo-word-clip)" : undefined}>
             {word.map((d, i) => (
               <path
                 key={i}

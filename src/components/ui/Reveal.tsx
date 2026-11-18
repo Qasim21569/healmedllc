@@ -2,6 +2,7 @@
 
 import { useRef, type CSSProperties, type ReactNode } from "react";
 import { motion, useInView } from "motion/react";
+import { useIntroReleased } from "@/hooks/useIntroReleased";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { EASE } from "@/lib/motion";
 
@@ -54,6 +55,7 @@ export function Reveal({
 }) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once, amount });
+  const released = useIntroReleased();
   const reduced = useReducedMotion();
   const Tag = tags[as];
 
@@ -65,7 +67,7 @@ export function Reveal({
       className={className}
       style={style}
       initial={{ opacity: 0, ...offset(direction, distance) }}
-      animate={inView || reduced ? { opacity: 1, x: 0, y: 0 } : undefined}
+      animate={(inView && released) || reduced ? { opacity: 1, x: 0, y: 0 } : undefined}
       transition={{ duration: reduced ? 0 : duration, delay: reduced ? 0 : delay, ease: EASE }}
     >
       {children}

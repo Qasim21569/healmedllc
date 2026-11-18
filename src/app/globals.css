@@ -249,73 +249,183 @@
   }
 }
 
-/* Preloader (T12): the logo assembles, then the panel lifts. CSS only, so it
-   removes itself without JavaScript. Hidden on later loads (html.intro-seen)
-   and under reduced motion. */
+/* ══════════════════════════════════════════════════════════════════════════
+   PRELOADER (T12): ported from brahma-web's intro, condensed to ~2.65s.
+   The boot script in Preloader.tsx flips data-intro on <html>:
+     skip (server default, no-JS, reduced motion, later loads) · play · exit
+     (tap/key skip) · done. Its timers tR=1950 / tD=2650 match the delays here.
+
+      0 → 2300  logo settles 0.96 → 1
+    150 → 1050  H circle outline draws (pathLength 1)
+    650 → 1250  its fill floods in, outline fades
+    700 → 1660  HEAL rises behind its mask, 70ms apart
+   1150 → 1750  MEDICAL LLC fades up
+    400 → 1950  rule draws once (progress)
+   1950 → 2650  curtain lifts, curved edge flattens
+   ══════════════════════════════════════════════════════════════════════════ */
+html[data-intro-lock] {
+  overflow: hidden;
+}
+
 .preloader {
+  display: none;
   position: fixed;
   inset: 0;
   z-index: 120;
-  display: grid;
-  place-items: center;
-  background-color: var(--canvas);
-  color: var(--ink);
   pointer-events: none;
-  animation: pl-exit 0.6s cubic-bezier(0.24, 0.43, 0.15, 0.97) 1.2s forwards;
 }
-html.intro-seen .preloader {
-  display: none;
+html[data-intro="play"] .preloader,
+html[data-intro="exit"] .preloader {
+  display: block;
 }
+.preloader-fill {
+  position: absolute;
+  inset: 0;
+  background-color: var(--canvas);
+}
+.preloader-edge {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 9vh;
+  fill: var(--canvas);
+  transform-origin: top center;
+}
+
+html[data-intro="play"] .preloader {
+  animation: pl-lift 700ms cubic-bezier(0.65, 0, 0.35, 1) 1950ms both;
+}
+html[data-intro="play"] .preloader-edge {
+  animation: pl-flatten 700ms cubic-bezier(0.65, 0, 0.35, 1) 1950ms both;
+}
+html[data-intro="exit"] .preloader {
+  animation: pl-lift 450ms cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+html[data-intro="exit"] .preloader-edge {
+  animation: pl-flatten 450ms cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.preloader-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(18px, 3vw, 28px);
+  color: var(--ink);
+}
+.preloader-logo {
+  width: min(68vw, 340px);
+  overflow: visible;
+  animation: pl-settle 2300ms cubic-bezier(0.24, 0.43, 0.15, 0.97) both;
+}
+
+/* The mark draws its outline, then floods; the outline fades as the fill
+   arrives so the drawn edge becomes the shape. */
 .preloader .logo-mark {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: pl-mark 0.8s cubic-bezier(0.24, 0.43, 0.15, 0.97) 0.1s both;
+  fill: transparent;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation:
+    pl-draw 900ms cubic-bezier(0.4, 0, 0.25, 1) 150ms both,
+    pl-fill 600ms cubic-bezier(0.24, 0.43, 0.15, 0.97) 650ms both;
 }
 .preloader .logo-letter {
   transform-box: fill-box;
-  animation: pl-letter 0.55s cubic-bezier(0.24, 0.43, 0.15, 0.97) both;
-  animation-delay: calc(0.35s + var(--i) * 0.06s);
+  animation: pl-rise 750ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(700ms + var(--i) * 70ms);
 }
 .preloader .logo-sub {
-  animation: pl-sub 0.5s cubic-bezier(0.24, 0.43, 0.15, 0.97) 0.65s both;
+  animation: pl-sub 600ms cubic-bezier(0.22, 1, 0.36, 1) 1150ms both;
 }
-@keyframes pl-mark {
+/* One line, drawn once, near-linear: it is the progress indicator. */
+.preloader-rule {
+  display: block;
+  width: min(68vw, 340px);
+  height: 1px;
+  background-color: currentColor;
+  opacity: 0.55;
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: pl-rule 1550ms cubic-bezier(0.4, 0, 0.25, 1) 400ms both;
+}
+
+@keyframes pl-settle {
   from {
-    opacity: 0;
-    transform: scale(0.7) rotate(-120deg);
+    transform: scale(0.96);
   }
   to {
-    opacity: 1;
-    transform: none;
+    transform: scale(1);
   }
 }
-@keyframes pl-letter {
+@keyframes pl-draw {
   from {
-    opacity: 0;
-    transform: translateY(40%);
+    stroke-dashoffset: 1;
   }
   to {
-    opacity: 1;
-    transform: none;
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes pl-fill {
+  from {
+    fill: transparent;
+    stroke-opacity: 1;
+  }
+  to {
+    fill: currentColor;
+    stroke-opacity: 0;
+  }
+}
+@keyframes pl-rise {
+  from {
+    transform: translateY(115%);
+  }
+  to {
+    transform: translateY(0);
   }
 }
 @keyframes pl-sub {
   from {
     opacity: 0;
+    transform: translateY(6px);
   }
   to {
     opacity: 0.8;
+    transform: translateY(0);
   }
 }
-@keyframes pl-exit {
+@keyframes pl-rule {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes pl-lift {
+  from {
+    transform: translateY(0);
+  }
   to {
     transform: translateY(-100%);
-    visibility: hidden;
+  }
+}
+@keyframes pl-flatten {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0);
   }
 }
 @media (prefers-reduced-motion: reduce) {
   .preloader {
-    display: none;
+    display: none !important;
   }
 }
 

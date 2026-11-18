@@ -1,8 +1,9 @@
 "use client";
 
-import type { CSSProperties, ReactNode } from "react";
-import { motion } from "motion/react";
+import { useRef, type CSSProperties, type ReactNode } from "react";
+import { motion, useInView } from "motion/react";
 import type { Lines } from "@/content/types";
+import { useIntroReleased } from "@/hooks/useIntroReleased";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { EASE } from "@/lib/motion";
@@ -56,6 +57,11 @@ export function MaskText({
 }) {
   const isMobile = useIsMobile();
   const reduced = useReducedMotion();
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once, amount });
+  // Waits for the preloader to start lifting (true when it isn't playing).
+  const released = useIntroReleased();
+  const show = reduced || (inView && released);
   const Tag = tags[as];
 
   const list: readonly ReactNode[] =
@@ -84,10 +90,9 @@ export function MaskText({
   return (
     <Tag
       id={id}
+      ref={ref as never}
       initial="initial"
-      whileInView={reduced ? undefined : "inView"}
-      animate={reduced ? "inView" : undefined}
-      viewport={{ once, amount }}
+      animate={show ? "inView" : once ? undefined : "initial"}
       variants={container}
       style={{ display: "block", ...style }}
       className={className}

@@ -2,6 +2,7 @@
 
 import { useRef, type CSSProperties, type ReactNode } from "react";
 import { motion, useInView } from "motion/react";
+import { useIntroReleased } from "@/hooks/useIntroReleased";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
 import { EASE } from "@/lib/motion";
@@ -33,7 +34,8 @@ export function RevealImage({
   const inView = useInView(ref, { once, amount });
   const reduced = useReducedMotion();
   const from = direction === "down" ? "inset(0% 0% 100% 0%)" : "inset(100% 0% 0% 0%)";
-  const show = inView || reduced;
+  const released = useIntroReleased();
+  const show = (inView && released) || reduced;
   // Respect a caller that positions the frame itself (e.g. absolute inset-0).
   const positioned = /(^|\s)(absolute|fixed|sticky)(\s|$)/.test(className ?? "");
 
