@@ -5,6 +5,7 @@ import { ParallaxContainer } from "./ParallaxContainer";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 const QUERIES = {
+  all: "(prefers-reduced-motion: no-preference)",
   md: "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
   lg: "(min-width: 1024px) and (prefers-reduced-motion: no-preference)",
 } as const;

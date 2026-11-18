@@ -12,7 +12,7 @@ import {
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "motion/react";
-import { site } from "@/content/site";
+import { Logo } from "@/components/ui/Logo";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { EASE } from "@/lib/motion";
 
@@ -21,7 +21,7 @@ import { EASE } from "@/lib/motion";
  * `transitionAnimations`, `template.tsx`), rebuilt on Motion + React state
  * instead of GSAP + zustand.
  *
- * Leave: a brand-violet panel with a small HEAL mark rises from the bottom
+ * Leave: a brand-violet panel with the logo mark (spinning in) rises from the bottom
  * (0.5s), then the route is pushed. Enter: `(site)/template.tsx` remounts with
  * the new page and calls `pageMounted()`, and the panel leaves off the top
  * (0.5s). Skipped on first load (nothing is covering), on browser back/forward
@@ -108,7 +108,19 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
           }
         }}
       >
-        <span className="type-h2 font-medium">{site.transition.label}</span>
+        {/* The logo mark spins in as the panel covers, and leaves with it. */}
+        <motion.span
+          className="block w-[clamp(56px,14vw,96px)]"
+          initial={false}
+          animate={
+            phase === "covering" || phase === "covered"
+              ? { opacity: 1, scale: 1, rotate: 0 }
+              : { opacity: 0, scale: 0.7, rotate: -90 }
+          }
+          transition={{ duration: phase === "idle" ? 0 : DURATION + 0.1, ease: EASE }}
+        >
+          <Logo variant="mark" className="w-full" />
+        </motion.span>
       </motion.div>
     </TransitionContext.Provider>
   );

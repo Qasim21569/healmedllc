@@ -11,9 +11,9 @@ export const contentType = "image/png";
 export default async function OpengraphImage() {
   const [font, logo] = await Promise.all([
     readFile(join(process.cwd(), "assets/HostGrotesk-Medium.ttf")),
-    readFile(join(process.cwd(), "public/brand/heal-logo-white.png")),
+    readFile(join(process.cwd(), "public/brand/heal-logo-white.svg")),
   ]);
-  const logoSrc = `data:image/png;base64,${logo.toString("base64")}`;
+  const logoSrc = `data:image/svg+xml;base64,${logo.toString("base64")}`;
 
   return new ImageResponse(
     <div
@@ -30,7 +30,7 @@ export default async function OpengraphImage() {
       }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={logoSrc} width={286 * 0.8} height={109 * 0.8} alt="" />
+      <img src={logoSrc} width={405 * 0.6} height={154 * 0.6} alt="" />
       <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
         <div style={{ fontSize: 200, lineHeight: 0.8, letterSpacing: "-0.02em" }}>{site.brand}</div>
         <div style={{ fontSize: 44, letterSpacing: "-0.02em", color: "#EBECF8" }}>

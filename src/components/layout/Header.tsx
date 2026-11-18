@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
@@ -10,55 +9,24 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
+import { Logo } from "@/components/ui/Logo";
 import { SmartLink } from "@/components/ui/SmartLink";
 import { MobileMenu } from "./MobileMenu";
-
-/**
- * Header logo: the supplied artwork as two transparent marks (violet for light
- * sections, white for brand and dark), stacked and crossfaded with the theme.
- */
-export function HeaderLogo({ theme, className }: { theme: string; className?: string }) {
-  const dark = theme !== "light";
-  const common = {
-    width: site.logo.width,
-    height: site.logo.height,
-    loading: "eager" as const,
-    sizes: "120px",
-  };
-  return (
-    <span className={cn("relative block h-9 lg:h-10", className)}>
-      <Image
-        alt=""
-        {...common}
-        src={site.logo.onLight}
-        className={cn(
-          "h-full w-auto transition-opacity duration-300 ease-heal",
-          dark && "opacity-0",
-        )}
-      />
-      <Image
-        alt=""
-        {...common}
-        src={site.logo.onDark}
-        className={cn(
-          "absolute inset-0 h-full w-auto transition-opacity duration-300 ease-heal",
-          !dark && "opacity-0",
-        )}
-      />
-    </span>
-  );
-}
 
 function isActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
 /**
- * Header (PLAYBOOK §6). Fixed, 76px (64 under 1024). Logo left, six links
- * centre, "Sell equipment" right; under 1024 the links collapse into a 44px
- * round menu button. Theme follows the section under it (T6). Transparent at
- * the top, solid canvas + float shadow after 80px; hides on scroll down past
- * 240px and returns on scroll up (brahma NavbarClient behaviour).
+ * Header (PLAYBOOK §6). Fixed, 76px (64 under 1024). Vector logo left (violet
+ * on light sections, white on brand and dark), six links centre, "Sell
+ * equipment" right; under 1024 a 44px round button that morphs between burger
+ * and close. Theme follows the section under it (T6). Transparent at the top,
+ * solid + float shadow after 80px; hides on scroll down past 240px and returns
+ * on scroll up.
+ *
+ * The header sits above the mobile menu (z-50 over z-40), so the logo and the
+ * button stay put while the panel opens and closes underneath them.
  */
 export function Header() {
   const pathname = usePathname();
@@ -116,8 +84,18 @@ export function Header() {
         transition={{ duration: reduced ? 0 : 0.6, ease: EASE }}
       >
         <div className="flex h-header items-center justify-between gap-6 px-margin-edge">
-          <SmartLink href="/" aria-label={site.logo.alt} className="flex shrink-0 items-center">
-            <HeaderLogo theme={shownTheme} />
+          <SmartLink
+            href="/"
+            aria-label={site.logo.alt}
+            onClick={() => setMenuOpen(false)}
+            className="flex shrink-0 items-center"
+          >
+            <Logo
+              className={cn(
+                "h-9 w-auto transition-colors duration-300 ease-heal lg:h-10",
+                shownTheme === "light" ? "text-brand" : "text-ink",
+              )}
+            />
           </SmartLink>
 
           <nav aria-label="Main" className="hidden lg:block">
@@ -156,25 +134,37 @@ export function Header() {
           <button
             ref={menuButtonRef}
             type="button"
-            className="grid size-11 place-items-center rounded-full border border-current lg:hidden"
-            aria-label={site.menu.open}
+            className="relative grid size-11 place-items-center rounded-full border border-current transition-colors duration-300 ease-heal active:scale-95 lg:hidden"
+            aria-label={menuOpen ? site.menu.close : site.menu.open}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
-            onClick={() => setMenuOpen(true)}
+            onClick={() => (menuOpen ? closeMenu() : setMenuOpen(true))}
           >
-            <svg viewBox="0 0 20 12" fill="none" className="w-5" aria-hidden="true">
-              <path
-                d="M1 1h18M1 11h18"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
+            {/* Two lines that rotate into an X. */}
+            <span aria-hidden="true" className="relative block h-3 w-5">
+              <span
+                className={cn(
+                  "absolute left-0 h-[1.5px] w-full rounded-full bg-current transition-[top,transform] duration-500 ease-heal",
+                  menuOpen ? "top-[5px] rotate-45" : "top-0 rotate-0",
+                )}
               />
-            </svg>
+              <span
+                className={cn(
+                  "absolute left-0 h-[1.5px] w-full rounded-full bg-current transition-[top,transform] duration-500 ease-heal",
+                  menuOpen ? "top-[5px] -rotate-45" : "top-[10px] rotate-0",
+                )}
+              />
+            </span>
           </button>
         </div>
       </motion.header>
 
-      <MobileMenu open={menuOpen} onClose={closeMenu} pathname={pathname} />
+      <MobileMenu
+        open={menuOpen}
+        onClose={closeMenu}
+        pathname={pathname}
+        toggleRef={menuButtonRef}
+      />
     </>
   );
 }

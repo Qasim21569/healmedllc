@@ -86,6 +86,15 @@ Qasim can't run the site, so Claude ran the production build (`next start`) and 
 - **2026-11-18 · 404 has the header but no footer** (no two brand sections together).
 - **2026-11-18 · Optional intro (T12)** mounts client-side only, so a JS failure can never leave the page covered. Off (`site.intro.enabled: false`).
 
+**Logo, preloader, transition and mobile pass (Qasim, 2026-11-18)**
+
+- **Vector logo everywhere.** Source: `public/brand/healmedllc-sg.svg` (Qasim). `npm run build:logo` (`scripts/build-logo.mjs`) generates `src/components/ui/logo-paths.ts` (mark, HEAL letters, MEDICAL LLC as separate paths), the app icons from the vector mark, and `public/brand/heal-logo-white.svg` for the share image. `<Logo variant="full|mark">` renders inline with `currentColor` (violet on light sections, white on brand/dark in the header). The raster PNG marks are deleted.
+- **Preloader (T12) is on.** `Preloader` (server, CSS keyframes in globals.css): mark spins in, HEAL letters rise, MEDICAL LLC fades, panel lifts at 1.2s (~1.8s total). It removes itself without JavaScript. Once per session via an inline gate script in the root layout's `<head>` (adds `intro-seen` to `<html>`, hence `suppressHydrationWarning` on `<html>`). Never under reduced motion. The old `Intro` and `site.intro` are removed.
+- **Page transition** shows the logo mark spinning in on the violet panel (was the word HEAL).
+- **Mobile menu rebuilt:** the header stays above the panel (z-50 over z-40), and one round button morphs burger ↔ X. The panel slides down; links stagger in after it. On close the links fade first, then the panel slides up and only then becomes hidden. Links are one line at `--t-menu` 30px (375) in a scroll area that centres with `my-auto`, so nothing is clipped. Bottom bar with phone, email and "Sell equipment" sits above the safe-area inset. The focus trap includes the header button.
+- **Mobile pass:** hero cards are a swipe carousel on phones (82% width, 4:5, snap, `SwipeDots` progress). Page hero bands and the About collage get gentle parallax on all widths (off under reduced motion). The I8 drift is visible on phones (0.6× with a distance floor). Tap feedback (`active:scale-[0.98]`) on cards and tiles. `MobileCta`: a floating "Sell equipment" pill under 1024px after 80% of the first screen, hidden while any form or the footer is on screen.
+- **Mobile type scale capped:** `--multiplier: min(100vw / 375, 1.3px)` below 768px, so 488 to 767px screens no longer get oversized headlines (the jump flagged at P0).
+
 **Home redesign (Qasim, 2026-11-18): supersedes PAGES.md Home rows 1, 6, 7 and the I1/I2 specs in BUILD-PLAYBOOK §5**
 
 - **Hero is now "Services split"** (Qasim picked it from four options). Brand section: labels, h1 left, lead + buttons right, then three tall photo cards (Planning 14, Disposition 18, Service 28) linking to each page. From 1024px with a fine pointer the hovered or focused card widens (flex-grow 1 → 1.9, 0.7s) and its one-line summary fades in; below that the cards stack at 4:3 with summaries always visible. Pure CSS (`.hero-card` in globals.css); the component is a server component now.
@@ -133,6 +142,13 @@ Qasim can't run the site, so Claude ran the production build (`next start`) and 
 ## Needs Qasim's eyes
 
 Everything from P2 on is unreviewed. Grouped by page; widths to check: 375, 390, 768, 1024, 1280, 1440, 1920.
+
+**Logo, preloader and mobile (2026-11-18)**
+- **Preloader:** speed and feel on a phone (clear the session or open a private tab to see it again). It holds ~1.2s before lifting.
+- **Mobile menu:** open/close slide and stagger, link size (30px), the morphing button, and the bottom bar on small phones (iPhone SE height).
+- **Hero carousel** on phones: card width (82%), swipe feel, progress dashes.
+- **Sell equipment pill:** when it appears and hides, and that it never covers anything important.
+- **Header logo** sharpness and colour switching (vector now).
 
 **New Home (2026-11-18)**
 - **Hero cards:** height (`max(340px, 440 × multiplier)`), the widen ratio (1.9) and speed, the gradient strength behind the labels, and how the three photos read side by side.

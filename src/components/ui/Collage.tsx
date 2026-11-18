@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
 import type { PhotoId } from "@/content/types";
-import { useIsDesktop } from "@/hooks/useIsDesktop";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
 import { Photo } from "./Photo";
 import { RevealImage } from "./RevealImage";
@@ -31,7 +31,7 @@ const SLOTS = [
  */
 export function Collage({ photos }: { photos: readonly [PhotoId, PhotoId, PhotoId] }) {
   const ref = useRef<HTMLDivElement>(null);
-  const enabled = useIsDesktop();
+  const enabled = !useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
 
   return (
@@ -69,7 +69,8 @@ function Frame({
   // Centred on the collage's midpoint; faster frames travel further.
   const y = useTransform(progress, (p) => {
     if (!enabled) return 0;
-    const scale = (globalThis.window?.innerWidth ?? 1440) / 1440;
+    // Scaled by width, with a floor so the depth still reads on phones.
+    const scale = Math.max(0.55, (globalThis.window?.innerWidth ?? 1440) / 1440);
     return (0.5 - p) * 240 * (speed - 0.75) * scale;
   });
   return (

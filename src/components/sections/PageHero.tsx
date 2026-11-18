@@ -106,7 +106,7 @@ export function PageHero({
             )}
           />
           <RevealImage className="relative aspect-[4/3] rounded-image md:aspect-[21/9]">
-            <ResponsiveImage parallaxAmount={20} from="lg">
+            <ResponsiveImage parallaxAmount={16} from="all">
               <Photo id={photo} fill sizes="(min-width: 768px) 100vw, 100vw" />
             </ResponsiveImage>
           </RevealImage>

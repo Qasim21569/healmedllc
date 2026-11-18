@@ -9,7 +9,9 @@
    375 on mobile, 1440 from 768 up. Copied from brahma-web, values from
    BUILD-PLAYBOOK §3.1. Body sizes are clamped to a readable range.      */
 :root {
-  --multiplier: calc(100vw / 375);
+  /* Capped at 1.3px so phablets and small tablets (488 to 767px) don't get
+     oversized type before the desktop scale starts at 768. */
+  --multiplier: min(calc(100vw / 375), 1.3px);
   --header-h: 64px;
 
   --t-mega: calc(120 * var(--multiplier));
@@ -24,7 +26,7 @@
   --t-body: clamp(15px, calc(16 * var(--multiplier)), 18px);
   --t-small: clamp(13px, calc(14 * var(--multiplier)), 15px);
   --t-eyebrow: clamp(11px, calc(12 * var(--multiplier)), 13px);
-  --t-menu: calc(40 * var(--multiplier));
+  --t-menu: calc(30 * var(--multiplier));
   --t-label: clamp(13px, calc(14 * var(--multiplier)), 15px);
 
   --s-margin-edge: calc(20 * var(--multiplier));
@@ -51,7 +53,7 @@
     --t-body: clamp(15px, calc(16 * var(--multiplier)), 18px);
     --t-small: clamp(13px, calc(14 * var(--multiplier)), 15px);
     --t-eyebrow: clamp(11px, calc(12 * var(--multiplier)), 13px);
-    --t-menu: calc(56 * var(--multiplier));
+    --t-menu: calc(52 * var(--multiplier));
     --t-label: clamp(13px, calc(15 * var(--multiplier)), 16px);
 
     --s-margin-edge: calc(40 * var(--multiplier));
@@ -244,6 +246,76 @@
   }
   .lenis.lenis-smooth iframe {
     pointer-events: none;
+  }
+}
+
+/* Preloader (T12): the logo assembles, then the panel lifts. CSS only, so it
+   removes itself without JavaScript. Hidden on later loads (html.intro-seen)
+   and under reduced motion. */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  background-color: var(--canvas);
+  color: var(--ink);
+  pointer-events: none;
+  animation: pl-exit 0.6s cubic-bezier(0.24, 0.43, 0.15, 0.97) 1.2s forwards;
+}
+html.intro-seen .preloader {
+  display: none;
+}
+.preloader .logo-mark {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pl-mark 0.8s cubic-bezier(0.24, 0.43, 0.15, 0.97) 0.1s both;
+}
+.preloader .logo-letter {
+  transform-box: fill-box;
+  animation: pl-letter 0.55s cubic-bezier(0.24, 0.43, 0.15, 0.97) both;
+  animation-delay: calc(0.35s + var(--i) * 0.06s);
+}
+.preloader .logo-sub {
+  animation: pl-sub 0.5s cubic-bezier(0.24, 0.43, 0.15, 0.97) 0.65s both;
+}
+@keyframes pl-mark {
+  from {
+    opacity: 0;
+    transform: scale(0.7) rotate(-120deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pl-letter {
+  from {
+    opacity: 0;
+    transform: translateY(40%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pl-sub {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.8;
+  }
+}
+@keyframes pl-exit {
+  to {
+    transform: translateY(-100%);
+    visibility: hidden;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .preloader {
+    display: none;
   }
 }
 

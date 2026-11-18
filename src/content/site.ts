@@ -21,12 +21,8 @@ export const site = {
   brandLine: "Providing a second life to your asset.",
   url: "https://healmedllc.com",
 
-  /** Transparent marks built from the supplied PNG by scripts/build-logo.mjs. */
+  /** The logo itself is the inline <Logo> (vector, from public/brand/healmedllc-sg.svg). */
   logo: {
-    onLight: "/brand/heal-logo-violet-mark.png",
-    onDark: "/brand/heal-logo-white.png",
-    width: 286,
-    height: 109,
     alt: "HEAL home",
   },
 
@@ -115,11 +111,6 @@ export const site = {
     socialLabels: { linkedin: "LinkedIn", instagram: "Instagram" },
     wordmark: "HEAL",
   },
-
-  /** Optional intro animation (T12, Phase 8). */
-  intro: { enabled: false },
-
-  transition: { label: "HEAL" },
 } as const;
 
 /** Store CTAs, only for stores whose URL is confirmed. */

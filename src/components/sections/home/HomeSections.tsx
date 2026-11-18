@@ -62,7 +62,10 @@ export function EquipmentRow() {
       <ul className="mt-[calc(var(--s-section-gap)*0.3)] grid grid-cols-2 gap-gutter lg:grid-cols-4">
         {equipment.items.map((item, i) => (
           <Reveal as="li" key={item.title} delay={i * 0.06}>
-            <SmartLink href={item.href} className="group/eq flex flex-col gap-3">
+            <SmartLink
+              href={item.href}
+              className="group/eq flex flex-col gap-3 transition-transform duration-300 ease-heal active:scale-[0.98]"
+            >
               <span className="relative block aspect-[4/3] overflow-hidden rounded-image">
                 <Photo
                   id={item.photo}

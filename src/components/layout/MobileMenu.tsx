@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 import { motion } from "motion/react";
 import { site } from "@/content/site";
 import { useLenis } from "@/components/providers/SmoothScrollProvider";
@@ -10,46 +10,51 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { SmartLink } from "@/components/ui/SmartLink";
-import { HeaderLogo } from "./Header";
 
 /**
- * MobileMenu (PLAYBOOK §6). Brand full screen under 1024px. Links with mono
- * index 01 to 06 rise in a T2 stagger; phone, email and "Sell equipment" at the
- * bottom. Focus is trapped inside, Esc closes, page scroll is locked (Lenis
- * stopped, root overflow clipped for the no-Lenis case).
+ * MobileMenu (under 1024px). A brand panel that slides down from the top
+ * under the header (which stays on top with the logo and the morphing
+ * button). Links rise in a stagger once the panel lands; on close they fade
+ * first, then the panel slides back up.
  *
- * Always mounted (renders server-side, never returns null); closed it is
- * `inert` and invisible.
+ * Layout: the link list scrolls on its own and centres when there is room
+ * (`my-auto` inside an overflow container, so the first and last links are
+ * never clipped). One line per link. Contact links and "Sell equipment" sit at
+ * the bottom, clear of the home indicator (safe-area inset).
+ *
+ * Esc closes; Tab cycles through the header button and the panel; page scroll
+ * is locked while open. Always mounted (renders server-side); closed it is
+ * `inert` and hidden.
  */
 export function MobileMenu({
   open,
   onClose,
   pathname,
+  toggleRef,
 }: {
   open: boolean;
   onClose: () => void;
   pathname: string;
+  toggleRef: RefObject<HTMLButtonElement | null>;
 }) {
   const lenis = useLenis();
   const reduced = useReducedMotion();
   const panelRef = useRef<HTMLDivElement>(null);
-  const closeRef = useRef<HTMLButtonElement>(null);
 
-  // Scroll lock + initial focus.
+  // Scroll lock.
   useEffect(() => {
     if (!open) return;
     const root = document.documentElement;
     const instance = lenis?.current;
     instance?.stop();
     root.style.overflow = "hidden";
-    closeRef.current?.focus();
     return () => {
       instance?.start();
       root.style.overflow = "";
     };
   }, [open, lenis]);
 
-  // Esc closes; Tab stays inside the panel.
+  // Esc closes; Tab stays within the header button + panel.
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (e: KeyboardEvent) => {
@@ -59,10 +64,12 @@ export function MobileMenu({
         return;
       }
       if (e.key !== "Tab" || !panelRef.current) return;
-      const focusables = panelRef.current.querySelectorAll<HTMLElement>(
-        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-      );
-      if (focusables.length === 0) return;
+      const focusables = [
+        toggleRef.current,
+        ...panelRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      ].filter((el): el is HTMLElement => Boolean(el));
       const first = focusables[0];
       const last = focusables[focusables.length - 1];
       if (e.shiftKey && document.activeElement === first) {
@@ -75,15 +82,12 @@ export function MobileMenu({
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [open, onClose]);
+  }, [open, onClose, toggleRef]);
 
-  const item = {
-    open: { opacity: 1, y: 0, transition: { duration: reduced ? 0 : 0.6, ease: EASE } },
-    closed: { opacity: 0, y: 24, transition: { duration: reduced ? 0 : 0.25, ease: EASE } },
-  };
+  const d = (s: number) => (reduced ? 0 : s);
 
   return (
-    <div
+    <motion.div
       ref={panelRef}
       id="mobile-menu"
       data-theme="brand"
@@ -91,94 +95,84 @@ export function MobileMenu({
       aria-modal="true"
       aria-label="Menu"
       inert={!open}
+      initial={false}
+      animate={open ? "open" : "closed"}
+      variants={{
+        open: { y: "0%", transition: { duration: d(0.6), ease: EASE } },
+        closed: { y: "-100%", transition: { duration: d(0.5), ease: EASE, delay: d(0.15) } },
+      }}
       className={cn(
-        "fixed inset-0 z-[60] flex flex-col bg-canvas text-ink lg:hidden",
-        "transition-[opacity,visibility] duration-300 ease-heal",
-        open ? "visible opacity-100" : "invisible opacity-0",
+        "fixed inset-0 z-40 flex flex-col bg-canvas pt-header text-ink lg:hidden",
+        // Hidden only after the slide-up has finished; visible at once on open.
+        open
+          ? "visible transition-[visibility] delay-0 duration-0"
+          : "invisible transition-[visibility] delay-[700ms] duration-0",
       )}
     >
-      <div className="flex h-header shrink-0 items-center justify-between px-margin-edge">
-        <SmartLink
-          href="/"
-          aria-label={site.logo.alt}
-          onClick={onClose}
-          className="flex items-center"
-        >
-          <HeaderLogo theme="brand" />
-        </SmartLink>
-        <button
-          ref={closeRef}
-          type="button"
-          onClick={onClose}
-          aria-label={site.menu.close}
-          className="grid size-11 place-items-center rounded-full border border-current"
-        >
-          <Icon name="close" />
-        </button>
-      </div>
-
-      <motion.nav
+      <nav
         aria-label="Main"
-        className="flex flex-1 flex-col justify-center overflow-y-auto px-margin-edge"
-        initial={false}
-        animate={open ? "open" : "closed"}
-        variants={{
-          open: {
-            transition: { staggerChildren: reduced ? 0 : 0.06, delayChildren: reduced ? 0 : 0.1 },
-          },
-          closed: { transition: { staggerChildren: 0.02, staggerDirection: -1 } },
-        }}
+        className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain px-margin-edge"
       >
-        <ul>
+        <motion.ul
+          className="my-auto py-6"
+          initial={false}
+          animate={open ? "open" : "closed"}
+          variants={{
+            open: { transition: { staggerChildren: d(0.05), delayChildren: d(0.25) } },
+            closed: { transition: { staggerChildren: d(0.02), staggerDirection: -1 } },
+          }}
+        >
           {site.nav.map((link) => {
-            const active = pathname === link.href;
+            const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
             return (
               <motion.li
                 key={link.href}
-                variants={item}
-                className="border-t border-hairline first:border-t-0"
+                className="border-b border-hairline last:border-b-0"
+                variants={{
+                  open: { opacity: 1, y: 0, transition: { duration: d(0.5), ease: EASE } },
+                  closed: { opacity: 0, y: -10, transition: { duration: d(0.18), ease: EASE } },
+                }}
               >
                 <SmartLink
                   href={link.href}
                   onClick={onClose}
                   aria-current={active ? "page" : undefined}
-                  className="flex min-h-11 items-baseline gap-4 py-3"
+                  className="flex min-h-14 items-center gap-4 py-2 transition-opacity active:opacity-60"
                 >
-                  <span aria-hidden="true" className="type-eyebrow w-6 text-muted">
+                  <span aria-hidden="true" className="type-eyebrow w-6 shrink-0 text-muted">
                     {link.index}
                   </span>
-                  <span
-                    className={cn("type-h2", active && "underline decoration-1 underline-offset-8")}
-                    style={{ fontSize: "var(--t-menu)" }}
-                  >
+                  <span className="type-h2 whitespace-nowrap" style={{ fontSize: "var(--t-menu)" }}>
                     {link.label}
                   </span>
+                  {active && (
+                    <span
+                      aria-hidden="true"
+                      className="ml-auto size-2 shrink-0 rounded-full bg-ink"
+                    />
+                  )}
                 </SmartLink>
               </motion.li>
             );
           })}
-        </ul>
-      </motion.nav>
+        </motion.ul>
+      </nav>
 
       <motion.div
-        className="flex shrink-0 flex-col gap-4 px-margin-edge pt-4 pb-8"
+        className="flex shrink-0 flex-col gap-4 border-t border-hairline px-margin-edge pt-5 pb-[max(1.5rem,env(safe-area-inset-bottom))]"
         initial={false}
         animate={open ? "open" : "closed"}
         variants={{
-          open: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: reduced ? 0 : 0.6, ease: EASE, delay: reduced ? 0 : 0.35 },
-          },
-          closed: { opacity: 0, y: 12, transition: { duration: reduced ? 0 : 0.2, ease: EASE } },
+          open: { opacity: 1, y: 0, transition: { duration: d(0.5), ease: EASE, delay: d(0.45) } },
+          closed: { opacity: 0, y: 8, transition: { duration: d(0.15), ease: EASE } },
         }}
       >
-        <div className="flex flex-col gap-1 type-small">
-          <a href={site.contact.phoneHref} className="inline-flex min-h-11 items-center gap-3">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-1 type-small">
+          <a href={site.contact.phoneHref} className="inline-flex min-h-11 items-center gap-2">
             <Icon name="phone" />
             {site.contact.phone}
           </a>
-          <a href={site.contact.emailHref} className="inline-flex min-h-11 items-center gap-3">
+          <a href={site.contact.emailHref} className="inline-flex min-h-11 items-center gap-2">
             <Icon name="mail" />
             {site.contact.email}
           </a>
@@ -187,6 +181,6 @@ export function MobileMenu({
           {site.headerCta.label}
         </Button>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }

@@ -16,8 +16,8 @@ const DRIFT: [number, number][] = [
 /**
  * DriftColumns (I8, codrops columns maths). Items are dealt into columns that
  * move at different speeds off one `useScroll` on the grid; the middle column
- * starts lower. Full drift at ≥1024 with a fine pointer; 3 columns with
- * drift ÷ 4 from 768; 2 columns with drift ÷ 4 on phones; none under reduced
+ * starts lower. Full drift at ≥1024 with a fine pointer; 0.6× elsewhere (3
+ * columns from 768, 2 on phones, distance floored so it reads); none under reduced
  * motion. The server renders the 3-column layout.
  */
 export function DriftColumns({ items }: { items: ReactNode[] }) {
@@ -33,7 +33,7 @@ export function DriftColumns({ items }: { items: ReactNode[] }) {
     () => false,
   );
   const count = twoCols ? 2 : 3;
-  const factor = !hydrated || reduced ? 0 : full ? 1 : 0.25;
+  const factor = !hydrated || reduced ? 0 : full ? 1 : 0.6;
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
 
@@ -69,7 +69,8 @@ function Column({
   factor: number;
 }) {
   const y = useTransform(progress, (p) => {
-    const scale = (globalThis.window?.innerWidth ?? 1440) / 1440;
+    // Width-scaled with a floor, so phones get a visible (smaller) drift.
+    const scale = Math.max(0.5, (globalThis.window?.innerWidth ?? 1440) / 1440);
     return (range[0] + (range[1] - range[0]) * p) * scale * factor;
   });
   return (

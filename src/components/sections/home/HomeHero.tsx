@@ -7,6 +7,7 @@ import { MaskText } from "@/components/ui/MaskText";
 import { Photo } from "@/components/ui/Photo";
 import { Reveal } from "@/components/ui/Reveal";
 import { SmartLink } from "@/components/ui/SmartLink";
+import { SwipeDots } from "@/components/ui/SwipeDots";
 
 const { hero } = home;
 
@@ -17,8 +18,8 @@ const { hero } = home;
  *
  * From 1024px with a fine pointer, the hovered (or keyboard-focused) card
  * widens and reveals its summary (`.hero-card` in globals.css, pure CSS, no
- * scroll effects). Below that, cards stack and always show their summary, so
- * nothing depends on hover. Reduced motion: the global rule drops transitions.
+ * scroll effects). Phones get a swipeable snap carousel (4:5 cards, the next one
+ * peeking, progress dashes) with summaries always visible. Reduced motion: no transitions.
  */
 export function HomeHero() {
   return (
@@ -56,17 +57,21 @@ export function HomeHero() {
         </div>
       </div>
 
-      <ul className="mt-[calc(var(--s-section-gap)*0.45)] flex flex-col gap-gutter md:h-[max(340px,calc(440*var(--multiplier)))] md:flex-row">
+      {/* Phones: a swipeable snap carousel (next card peeks). 768+: a row. */}
+      <ul
+        id="hero-cards"
+        className="-mx-margin-edge mt-[calc(var(--s-section-gap)*0.45)] flex snap-x snap-mandatory scroll-px-margin-edge gap-3 overflow-x-auto px-margin-edge [scrollbar-width:none] md:mx-0 md:h-[max(340px,calc(440*var(--multiplier)))] md:gap-gutter md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden"
+      >
         {hero.services.map((service, i) => (
           <Reveal
             as="li"
             key={service.href}
             delay={0.2 + i * 0.08}
-            className="hero-card group/card relative min-w-0 md:flex-1"
+            className="hero-card group/card relative w-[82%] shrink-0 snap-start md:w-auto md:min-w-0 md:flex-1 md:shrink"
           >
             <SmartLink
               href={service.href}
-              className="relative flex aspect-[4/3] h-full flex-col justify-end overflow-hidden rounded-card md:aspect-auto"
+              className="relative flex aspect-[4/5] h-full flex-col justify-end overflow-hidden rounded-card transition-transform duration-300 ease-heal active:scale-[0.98] md:aspect-auto md:active:scale-100"
             >
               <Photo
                 id={service.photo}
@@ -102,6 +107,7 @@ export function HomeHero() {
           </Reveal>
         ))}
       </ul>
+      <SwipeDots targetId="hero-cards" count={hero.services.length} className="mt-5 text-ink" />
     </Section>
   );
 }

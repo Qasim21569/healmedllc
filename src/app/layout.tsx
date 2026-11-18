@@ -3,6 +3,7 @@ import { Geist_Mono, Host_Grotesk } from "next/font/google";
 import "./globals.css";
 import { jsonLdScript, localBusiness } from "@/lib/jsonld";
 import { rootMetadata } from "@/lib/seo";
+import { PRELOADER_GATE } from "@/components/layout/Preloader";
 
 /* D4: Host Grotesk 400/500 for everything, Geist Mono 400 for eyebrows and
    specs. Suisse Int'l replaces Host Grotesk later via this one import. */
@@ -30,7 +31,15 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${hostGrotesk.variable} ${geistMono.variable}`}>
+    // suppressHydrationWarning: the preloader gate may add "intro-seen" to <html> before hydration.
+    <html
+      lang="en"
+      className={`${hostGrotesk.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: PRELOADER_GATE }} />
+      </head>
       <body>
         {/* Without JS the reveal components never run: show their end state. */}
         <noscript>
