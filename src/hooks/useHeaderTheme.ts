@@ -3,10 +3,10 @@
 import { useEffect, useState, type RefObject } from "react";
 import type { Theme } from "@/components/layout/Section";
 
-const SELECTOR = "main section[data-theme], footer[data-theme], [data-header-theme]";
+const SELECTOR = "main section[data-theme], footer[data-theme]";
 
 function themeOf(el: Element): Theme {
-  const value = el.getAttribute("data-header-theme") ?? el.getAttribute("data-theme");
+  const value = el.getAttribute("data-theme");
   return value === "dark" || value === "brand" ? value : "light";
 }
 
@@ -16,12 +16,8 @@ function themeOf(el: Element): Theme {
  * through the header's vertical centre. Whatever section sits under that line
  * sets the header's own `data-theme`.
  *
- * A section can override what the header shows with `data-header-theme`
- * (I1 flips it to `dark` once the photo fills the screen); attribute changes
- * on the current section are picked up by a MutationObserver.
- *
  * Re-subscribes on route change (`key`), on resize, and when sections are
- * swapped in the DOM (desktop signatures replace their static markup).
+ * swapped in the DOM (I6 replaces its static markup after hydration).
  */
 export function useHeaderTheme(
   headerRef: RefObject<HTMLElement | null>,
@@ -32,27 +28,19 @@ export function useHeaderTheme(
 
   useEffect(() => {
     let io: IntersectionObserver | null = null;
-    let mo: MutationObserver | null = null;
-    let current: Element | null = null;
     let watched: Element[] = [];
 
     const setup = () => {
       io?.disconnect();
-      mo?.disconnect();
 
       const h = headerRef.current?.offsetHeight ?? 64;
       const centre = Math.round(h / 2);
       const bottom = Math.max(0, window.innerHeight - centre - 1);
 
-      mo = new MutationObserver(() => {
-        if (current) setTheme(themeOf(current));
-      });
-
       io = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
             if (!entry.isIntersecting) continue;
-            current = entry.target;
             setTheme(themeOf(entry.target));
           }
         },
@@ -62,7 +50,6 @@ export function useHeaderTheme(
       watched = Array.from(document.querySelectorAll(SELECTOR));
       watched.forEach((el) => {
         io?.observe(el);
-        mo?.observe(el, { attributes: true, attributeFilter: ["data-header-theme"] });
       });
     };
 
@@ -90,7 +77,6 @@ export function useHeaderTheme(
       dom.disconnect();
       window.removeEventListener("resize", onResize);
       io?.disconnect();
-      mo?.disconnect();
     };
   }, [headerRef, key]);
 

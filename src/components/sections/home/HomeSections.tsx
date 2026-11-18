@@ -6,7 +6,11 @@ import { BreakoutTile } from "@/components/ui/BreakoutTile";
 import { Button } from "@/components/ui/Button";
 import { DriftColumns } from "@/components/ui/DriftColumns";
 import { PulseSteps } from "@/components/ui/PulseSteps";
-import ResponsiveMarquee from "@/components/ui/ResponsiveMarquee";
+import { Eyebrow } from "@/components/ui/Eyebrow";
+import { Icon } from "@/components/ui/Icon";
+import { Photo } from "@/components/ui/Photo";
+import { Reveal } from "@/components/ui/Reveal";
+import { SmartLink } from "@/components/ui/SmartLink";
 import { SectionHead } from "@/components/sections/SectionHead";
 
 const TILE_SIZES = "(min-width: 768px) 30vw, 45vw";
@@ -44,46 +48,40 @@ export function Lifecycle() {
   );
 }
 
-/** Home marquee (light): one line, violet, T5. */
-export function HomeMarquee() {
-  const { items } = home.marquee;
-  const run = (copy: number) =>
-    items.map((item) => (
-      <span
-        key={`${copy}-${item}`}
-        className="flex items-center"
-        aria-hidden={copy > 0 || undefined}
-      >
-        <span>{item}</span>
-        <span aria-hidden="true" className="px-[0.35em] opacity-45">
-          ·
-        </span>
-      </span>
-    ));
+/**
+ * Home "Equipment we know" (light). Replaces the marquee (Qasim, 2026-11-18):
+ * four calm photo cards, each linking to where that equipment is covered.
+ */
+export function EquipmentRow() {
+  const { equipment } = home;
   return (
-    <Section
-      theme="light"
-      flush
-      className="py-[calc(var(--s-section-gap)*0.55)]"
-      label={items.join(", ")}
-    >
-      <ResponsiveMarquee
-        className="type-marquee text-brand"
-        animationConfig={{
-          desktop: { max: "-50%", speed: -3 },
-          mobile: { max: "-50%", speed: -6 },
-        }}
-      >
-        {/* Two identical halves so the -50% wrap is seamless. */}
-        <span className="flex">
-          {run(0)}
-          {run(1)}
-        </span>
-        <span className="flex" aria-hidden="true">
-          {run(2)}
-          {run(3)}
-        </span>
-      </ResponsiveMarquee>
+    <Section theme="light" labelledBy="equipment-row-title">
+      <Eyebrow>
+        <span id="equipment-row-title">{equipment.eyebrow}</span>
+      </Eyebrow>
+      <ul className="mt-[calc(var(--s-section-gap)*0.3)] grid grid-cols-2 gap-gutter lg:grid-cols-4">
+        {equipment.items.map((item, i) => (
+          <Reveal as="li" key={item.title} delay={i * 0.06}>
+            <SmartLink href={item.href} className="group/eq flex flex-col gap-3">
+              <span className="relative block aspect-[4/3] overflow-hidden rounded-image">
+                <Photo
+                  id={item.photo}
+                  fill
+                  sizes="(min-width: 1024px) 23vw, 45vw"
+                  imageClassName="transition-transform duration-700 ease-heal [@media(pointer:fine)]:group-hover/eq:scale-[1.04]"
+                />
+              </span>
+              <span className="flex items-center justify-between gap-3 type-body text-ink">
+                {item.title}
+                <Icon
+                  name="arrow"
+                  className="text-brand transition-transform duration-300 ease-heal group-hover/eq:translate-x-1"
+                />
+              </span>
+            </SmartLink>
+          </Reveal>
+        ))}
+      </ul>
     </Section>
   );
 }

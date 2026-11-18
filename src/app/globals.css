@@ -247,6 +247,30 @@
   }
 }
 
+/* Home hero "Services split": from 1024px with a fine pointer, the hovered or
+   focused card widens and its summary fades in. Elsewhere summaries stay visible. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .hero-card {
+    transition: flex-grow 0.7s cubic-bezier(0.24, 0.43, 0.15, 0.97);
+  }
+  .hero-card:hover,
+  .hero-card:focus-within {
+    flex-grow: 1.9;
+  }
+  .hero-card-summary {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.5s cubic-bezier(0.24, 0.43, 0.15, 0.97),
+      transform 0.5s cubic-bezier(0.24, 0.43, 0.15, 0.97);
+  }
+  .hero-card:hover .hero-card-summary,
+  .hero-card:focus-within .hero-card-summary {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* T10 service card scan line: a soft band sweeps the panel once on hover. */
 .tile-scan {
   opacity: 0;

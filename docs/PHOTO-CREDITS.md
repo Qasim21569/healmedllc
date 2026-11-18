@@ -12,7 +12,6 @@ To replace a photo: drop the new file in `public/photos/` and update `src`, `alt
 
 | Slot | Source | License |
 | --- | --- | --- |
-| 01 | https://images.unsplash.com/photo-1664902265139-934219cee42f | Unsplash License |
 | 03 | https://images.unsplash.com/photo-1581090466619-e945d2e2980e | Unsplash License |
 | 04 | https://images.unsplash.com/photo-1630128295920-627fb9aff5a4 | Unsplash License |
 | 05 | https://images.unsplash.com/photo-1691935071222-c008a4ccc2ca | Unsplash License |

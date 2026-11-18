@@ -1,5 +1,5 @@
 import { HomeHero } from "@/components/sections/home/HomeHero";
-import { HomeMarquee, HomeShop, Lifecycle, WeBuy } from "@/components/sections/home/HomeSections";
+import { EquipmentRow, HomeShop, Lifecycle, WeBuy } from "@/components/sections/home/HomeSections";
 import { Statement } from "@/components/sections/home/Statement";
 import { WhatWeDo } from "@/components/sections/home/WhatWeDo";
 import { WhoWeAre } from "@/components/sections/home/WhoWeAre";
@@ -17,7 +17,7 @@ export default function HomePage() {
       <WeBuy />
       <Lifecycle />
       <WhoWeAre />
-      <HomeMarquee />
+      <EquipmentRow />
       <HomeShop />
     </>
   );

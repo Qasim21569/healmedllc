@@ -26,8 +26,10 @@ const cut = { width: 1200, height: 1600 };
 
 export const photos: Record<PhotoId, PhotoEntry> = {
   "01": {
-    src: "/photos/p01.webp",
-    alt: "Anesthesia workstation with its monitor and breathing circuit",
+    // Was the I1 hero photo; that hero was replaced by "Services split"
+    // (2026-11-18). Slot kept for a future hero shot.
+    src: null,
+    alt: "Close detail of hospital equipment under cool light",
     subject: "Equipment detail, high contrast",
     width: 2880,
     height: 1620,

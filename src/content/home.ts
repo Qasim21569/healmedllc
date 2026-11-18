@@ -1,5 +1,13 @@
 import type { Cta, Lines, PhotoId, Point, Tile } from "./types";
 
+export type HeroService = {
+  index: string;
+  title: string;
+  summary: Lines;
+  href: string;
+  photo: PhotoId;
+};
+
 export const home = {
   hero: {
     eyebrow: "Heal Med LLC · Sacramento, CA",
@@ -25,10 +33,35 @@ export const home = {
       { label: "Sell your equipment", href: "/asset-disposition" },
       { label: "Browse inventory", href: "/shop" },
     ] satisfies readonly Cta[],
-    caption: "Every device, inspected by an engineer.",
-    photo: "01" as PhotoId,
-    /** Letter the I1 zoom lands in (BUILD-PLAYBOOK §5). */
-    zoomInto: "L" as const,
+    /**
+     * "Services split" (Qasim, 2026-11-18): three tall photo cards under the
+     * h1. The hovered card widens and shows its summary; each opens its page.
+     */
+    services: [
+      {
+        index: "01",
+        title: "Equipment Planning",
+        summary: { desktop: ["Consultation, capital planning", "and asset management."] },
+        href: "/equipment-planning",
+        photo: "14",
+      },
+      {
+        index: "02",
+        title: "Asset Disposition",
+        summary: { desktop: ["We buy surplus and retired", "equipment at a fair value."] },
+        href: "/asset-disposition",
+        photo: "18",
+      },
+      {
+        index: "03",
+        title: "Service",
+        summary: {
+          desktop: ["Repair and maintenance for", "ventilators, ultrasound and histology."],
+        },
+        href: "/service",
+        photo: "28",
+      },
+    ] satisfies readonly HeroService[],
   },
 
   statement: {
@@ -182,8 +215,15 @@ export const home = {
     cta: { label: "Our story", href: "/about#story" } satisfies Cta,
   },
 
-  marquee: {
-    items: ["Ventilators", "Ultrasound", "Histology", "Patient monitors"],
+  /** Replaces the marquee (Qasim, 2026-11-18): a calm row of equipment cards. */
+  equipment: {
+    eyebrow: "Equipment we know",
+    items: [
+      { title: "Ventilators", photo: "19", href: "/service#equipment" },
+      { title: "Ultrasound", photo: "30", href: "/service#equipment" },
+      { title: "Histology", photo: "22", href: "/service#equipment" },
+      { title: "Patient monitors", photo: "21", href: "/asset-disposition#buy" },
+    ] satisfies readonly Tile[],
   },
 
   shop: {

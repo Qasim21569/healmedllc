@@ -86,6 +86,15 @@ Qasim can't run the site, so Claude ran the production build (`next start`) and 
 - **2026-11-18 · 404 has the header but no footer** (no two brand sections together).
 - **2026-11-18 · Optional intro (T12)** mounts client-side only, so a JS failure can never leave the page covered. Off (`site.intro.enabled: false`).
 
+**Home redesign (Qasim, 2026-11-18): supersedes PAGES.md Home rows 1, 6, 7 and the I1/I2 specs in BUILD-PLAYBOOK §5**
+
+- **Hero is now "Services split"** (Qasim picked it from four options). Brand section: labels, h1 left, lead + buttons right, then three tall photo cards (Planning 14, Disposition 18, Service 28) linking to each page. From 1024px with a fine pointer the hovered or focused card widens (flex-grow 1 → 1.9, 0.7s) and its one-line summary fades in; below that the cards stack at 4:3 with summaries always visible. Pure CSS (`.hero-card` in globals.css); the component is a server component now.
+- **I1 letters aperture removed:** `heal-letters.ts`, `scripts/build-heal-letters.mjs`, `opentype.js` and photo 01's file are gone (slot kept as `null`). The header's `data-header-theme` override, which only I1 used, is removed too.
+- **I2 shutter removed:** "Who we are" is a plain dark section (label, display h2, body, list, button); photo 10's file removed.
+- **Marquee replaced** by "Equipment we know": four photo cards (Ventilators 19, Ultrasound 30, Histology 22, Patient monitors 21), linking to Service or Disposition. `Marquee` and `ResponsiveMarquee` deleted.
+- **Signatures now:** Home has none (D9 said I1 + I2; changed by Qasim). Equipment Planning keeps I6. Home motion is T1/T2/T3/T4, I5 tiles, I7 rows and I8 drift.
+- **New test:** `tests/photos-usage.test.ts` fails if any photo file in /public/photos isn't referenced by a page.
+
 **Photography and labels (Qasim, 2026-11-18)**
 
 - **Stand-in stock photography everywhere** (Qasim asked for proper images). 34 slots from Unsplash under the Unsplash License (free for commercial use, no attribution needed; no Unsplash+), cropped to each slot's ratio and compressed to WebP, all under budget; record in `docs/PHOTO-CREDITS.md`, script `scripts/fetch-stock-photos.mjs`. Not Google Images: most results there are copyrighted. Equipment shots are real photographs, not AI-generated (D10). Patients and identifiable data screens avoided.
@@ -124,6 +133,11 @@ Qasim can't run the site, so Claude ran the production build (`next start`) and 
 ## Needs Qasim's eyes
 
 Everything from P2 on is unreviewed. Grouped by page; widths to check: 375, 390, 768, 1024, 1280, 1440, 1920.
+
+**New Home (2026-11-18)**
+- **Hero cards:** height (`max(340px, 440 × multiplier)`), the widen ratio (1.9) and speed, the gradient strength behind the labels, and how the three photos read side by side.
+- **Equipment row:** four cards at 2 columns on phones, 4 at 1024+.
+- **Who we are** without the photo: does the display-size h2 carry the dark band on its own?
 
 **New since the check**
 - **Section labels** (rule + sentence case + dots): size and weight next to the h2s; whether the rule should be longer or the label muted instead of ink.
