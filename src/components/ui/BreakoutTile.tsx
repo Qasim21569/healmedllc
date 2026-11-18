@@ -116,10 +116,10 @@ export function BreakoutTile({
     </>
   );
 
-  if (!href) return <div className={cn("group/tile block", className)}>{body}</div>;
+  if (!href) return <div className={cn("group/tile scan-tile block", className)}>{body}</div>;
 
   return (
-    <SmartLink href={href} className={cn("group/tile block", className)}>
+    <SmartLink href={href} className={cn("group/tile scan-tile block", className)}>
       {body}
     </SmartLink>
   );

@@ -252,7 +252,7 @@
   opacity: 0;
 }
 @media (pointer: fine) {
-  .group/tile:hover .tile-scan {
+  .scan-tile:hover .tile-scan {
     animation: tile-scan 1.2s cubic-bezier(0.24, 0.43, 0.15, 0.97) 1;
   }
 }

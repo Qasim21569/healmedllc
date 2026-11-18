@@ -39,6 +39,9 @@ Qasim can't run the site, so Claude ran the production build (`next start`) and 
   4. **T4 pulse line:** dot and drawn line disagreed (`vector-effect: non-scaling-stroke` makes the browser measure pathLength dashes in screen pixels). Removed.
   5. **JSON-LD escaping** was a no-op (caught by a test in P7, fixed then).
   6. Share image letters overlapped (satori applies tight tracking harder); loosened to -0.02em.
+  7. **`npm run dev` returned 500 on every page:** the T10 scan-line CSS used an unescaped `.group/tile` selector. `next build` tolerated it, the dev CSS parser does not. Now a plain `.scan-tile` class.
+  8. **Hydration mismatch in the I8 drift columns** (dev console): the first client render used the real window width, the server assumed 1440. Drift now starts at 0 until hydrated.
+- **Dev server check:** all routes 200 on `npm run dev`, no console errors on any page after these fixes.
 - **Polish from the check:** I2 lines fade out (0.55 to 0.65) so the copy reads over the open photo; the footer HEAL sits as one word instead of being spread across the width; the I1 photo layer has a dark ground so the letters read before the photo loads.
 - **Verified after fixes:** I1 progress map (text gone by 15%, exponential zoom, caption at 0.85+, header dark at the end), header theme over every Home section, I6 pill/text/photo swaps, Disposition offer form validation, no console errors.
 

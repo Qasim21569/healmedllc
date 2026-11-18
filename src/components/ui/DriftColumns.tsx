@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import { useRef, useSyncExternalStore, type ReactNode } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
@@ -25,8 +25,15 @@ export function DriftColumns({ items }: { items: ReactNode[] }) {
   const full = useIsDesktop();
   const twoCols = useMediaQuery("(max-width: 767px)");
   const reduced = useReducedMotion();
+  // false on the server and during hydration, so the first client render
+  // matches the server HTML (no drift offset) before the real width is used.
+  const hydrated = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
   const count = twoCols ? 2 : 3;
-  const factor = reduced ? 0 : full ? 1 : 0.25;
+  const factor = !hydrated || reduced ? 0 : full ? 1 : 0.25;
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
 
@@ -47,6 +54,8 @@ export function DriftColumns({ items }: { items: ReactNode[] }) {
     </div>
   );
 }
+
+const noopSubscribe = () => () => {};
 
 function Column({
   children,
