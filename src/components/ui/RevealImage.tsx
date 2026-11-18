@@ -34,12 +34,21 @@ export function RevealImage({
   const reduced = useReducedMotion();
   const from = direction === "down" ? "inset(0% 0% 100% 0%)" : "inset(100% 0% 0% 0%)";
   const show = inView || reduced;
+  // Respect a caller that positions the frame itself (e.g. absolute inset-0).
+  const positioned = /(^|\s)(absolute|fixed|sticky)(\s|$)/.test(className ?? "");
 
   return (
-    <div ref={ref} className={cn("overflow-hidden", className)} style={style}>
+    // Both boxes are positioned: a fill image inside must size to this frame.
+    // Without it the image only stays in the frame while the scale transform
+    // runs, then grows to the next positioned ancestor once it ends.
+    <div
+      ref={ref}
+      className={cn(!positioned && "relative", "overflow-hidden", className)}
+      style={style}
+    >
       <motion.div
         data-reveal=""
-        className="size-full"
+        className="relative size-full"
         initial={{ clipPath: from, scale: 1.15 }}
         animate={show ? { clipPath: "inset(0% 0% 0% 0%)", scale: 1 } : undefined}
         transition={{

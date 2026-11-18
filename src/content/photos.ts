@@ -97,11 +97,13 @@ export const photos: Record<PhotoId, PhotoEntry> = {
     cutout: false,
   },
   "10": {
-    src: "/photos/p10.webp",
-    alt: "Engineer working at a bench of electronics",
+    // Was the I2 shutter photo; the shutter was removed (2026-11-18). Kept for
+    // a real "Ahmed at the bench" shot if one is used later.
+    src: null,
+    alt: "Ahmed Kharodia testing equipment at the bench",
     subject: "Ahmed at the bench, wide",
-    width: 2400,
-    height: 1350,
+    width: 2880,
+    height: 1620,
     backdrop: "none",
     cutout: false,
   },

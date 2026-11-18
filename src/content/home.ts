@@ -99,14 +99,14 @@ export const home = {
         title: { desktop: ["Asset Disposition"], mobile: ["Asset", "Disposition"] } satisfies Lines,
         chips: ["What we buy", "Fair dollar value", "Get an offer"],
         href: "/asset-disposition",
-        photo: "18" as PhotoId,
+        photo: "17" as PhotoId,
       },
       {
         index: "03",
         title: { desktop: ["Service"] } satisfies Lines,
         chips: ["Ventilators", "Ultrasound", "Histology", "More to come"],
         href: "/service",
-        photo: "28" as PhotoId,
+        photo: "39" as PhotoId,
       },
     ],
     /** Accessible label for a row's link (the title is read first). */
@@ -163,7 +163,6 @@ export const home = {
 
   whoWeAre: {
     eyebrow: "Who we are",
-    /** Two lines that split apart in the I2 shutter. */
     h2: { desktop: ["Run by a", "biomedical engineer."] } satisfies Lines,
     body: {
       desktop: [
@@ -181,7 +180,6 @@ export const home = {
       "Less waste, longer life",
     ],
     cta: { label: "Our story", href: "/about#story" } satisfies Cta,
-    photo: "10" as PhotoId,
   },
 
   marquee: {

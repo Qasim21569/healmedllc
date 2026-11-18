@@ -93,7 +93,7 @@ export function HoverFollowImage({
                 animate={{ opacity: i === active ? 1 : 0 }}
                 transition={{ duration: 0.3, ease: EASE }}
               >
-                <Photo id={id} fill sizes="300px" />
+                <Photo id={id} fill sizes="(min-width: 1920px) 480px, 400px" />
               </motion.div>
             ))}
           </motion.div>
